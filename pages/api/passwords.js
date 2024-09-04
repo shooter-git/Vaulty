@@ -3,11 +3,13 @@ import { encrypt, decrypt } from '../../lib/encryption'
 import { getPasswords, getPassword, addPassword, updatePassword, deletePassword } from '../../lib/db'
 
 export default async function handler(req, res) {
-  // Verify JWT token
-  const token = req.headers.authorization?.split(' ')[1]
+  const token = req.headers.authorization?.split(' ')[1];
+  
   if (!token || !verifyToken(token)) {
-    return res.status(401).json({ message: 'Unauthorized' })
+    return res.status(401).json({ message: 'Invalid token' });
   }
+
+  console.log('Token verified successfully');
 
   switch (req.method) {
     case 'GET':
