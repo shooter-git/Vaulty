@@ -21,43 +21,25 @@ export default function PasscodeForm({ onSubmit }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="passcode-form">
-      <h2>Enter Passcode</h2>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+      <h2 className="text-2xl font-bold text-center">Enter Passcode</h2>
       <input
         type="password"
         value={passcode}
         onChange={(e) => setPasscode(e.target.value)}
         placeholder="Enter 6-12 digit passcode"
+        className="w-full p-2 border rounded"
         minLength={6}
         maxLength={12}
         required
       />
-      {error && <p className="error">{error}</p>}
-      <button type="submit">Submit</button>
-
-      <style jsx>{`
-        .passcode-form {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1rem;
-          max-width: 300px;
-          margin: 0 auto;
-        }
-        input {
-          width: 100%;
-          padding: 0.5rem;
-          font-size: 1rem;
-        }
-        .error {
-          color: red;
-        }
-        button {
-          padding: 0.5rem 1rem;
-          font-size: 1rem;
-          cursor: pointer;
-        }
-      `}</style>
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+      <button
+        type="submit"
+        className="w-full p-2 bg-kali-accent dark:bg-synthwave-accent text-kali-text dark:text-synthwave-text rounded hover:opacity-80 transition-opacity"
+      >
+        Submit
+      </button>
     </form>
   )
 }

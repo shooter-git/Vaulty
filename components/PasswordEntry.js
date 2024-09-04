@@ -19,25 +19,14 @@ export default function PasswordEntry({ password }) {
   }
 
   return (
-    <div className="password-entry">
-      <span className="description">{password.description}</span>
-      <button onClick={copyToClipboard}>
+    <div className="flex justify-between items-center p-4 bg-kali-secondary dark:bg-synthwave-secondary rounded-lg">
+      <span className="font-semibold text-kali-text dark:text-synthwave-text">{password.description}</span>
+      <button
+        onClick={copyToClipboard}
+        className="px-4 py-2 bg-kali-accent dark:bg-synthwave-accent text-kali-text dark:text-synthwave-text rounded hover:opacity-80 transition-opacity"
+      >
         {isCopied ? 'Copied!' : 'Copy'}
       </button>
-
-      <style jsx>{`
-        .password-entry {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 10px;
-          border: 1px solid #ddd;
-          margin-bottom: 10px;
-        }
-        .description {
-          font-weight: bold;
-        }
-      `}</style>
     </div>
   )
 }

@@ -28,33 +28,19 @@ export default function PasswordList() {
     }
   }
 
-  const addPassword = async (description, password) => {
-    try {
-      const response = await fetch('/api/passwords', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ description, password })
-      })
-      if (!response.ok) throw new Error('Failed to add password')
-      fetchPasswords()
-    } catch (err) {
-      setError(err.message)
-    }
-  }
-
-  if (isLoading) return <div>Loading passwords...</div>
-  if (error) return <div>Error: {error}</div>
+  if (isLoading) return <div className="text-center py-4">Loading passwords...</div>
+  if (error) return <div className="text-red-500 text-center py-4">Error: {error}</div>
 
   return (
-    <div>
-      <h2>Your Passwords</h2>
-      {passwords.map(pwd => (
-        <PasswordEntry key={pwd._id} password={pwd} />
-      ))}
-      <button onClick={() => addPassword('New Password', 'password123')}>Add Password</button>
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold mb-4">Your Passwords</h2>
+      {passwords.length === 0 ? (
+        <p className="text-center">No passwords stored yet.</p>
+      ) : (
+        passwords.map(pwd => (
+          <PasswordEntry key={pwd.id} password={pwd} />
+        ))
+      )}
     </div>
   )
 }
