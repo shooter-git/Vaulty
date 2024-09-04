@@ -45,3 +45,5 @@ yarn-error.log*
 # Database
 *.sqlite
 *.sqlite3
+
+package-lock.json
