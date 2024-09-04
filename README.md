@@ -1,4 +1,4 @@
-# 🔐 Secure Clipboard PWA
+# 🔐 vaulty - Secure Clipboard PWA
 
 <div align="center">
 
