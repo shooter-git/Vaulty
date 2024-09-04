@@ -11,7 +11,7 @@
 
 A secure, lightweight Progressive Web App for managing and retrieving passwords with ease!
 
-[Features](#-features) • [Getting Started](#-getting-started) • [Usage](#-usage) • [Security](#-security) • [Contributing](#-contributing)
+[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Security](#-security) • [Contributing](#-contributing)
 
 </div>
 
@@ -23,8 +23,9 @@ A secure, lightweight Progressive Web App for managing and retrieving passwords 
 - 🎲 **Password Generator**: Create strong, unique passwords with our built-in generator
 - 🚀 **Progressive Web App**: Install and use offline on any device
 - ⚡ **Fast and Responsive**: Built with Next.js for optimal performance
+- 💾 **Lightweight Database**: Uses SQLite for simple, file-based data storage
 
-## 🚀 Getting Started
+## 🚀 Installation
 
 1. Clone the repository:
    ```bash
@@ -41,28 +42,60 @@ A secure, lightweight Progressive Web App for managing and retrieving passwords 
    ```bash
    cp .env.example .env.local
    ```
-   Edit `.env.local` with your specific configuration.
+   Edit `.env.local` with your specific configuration:
+   ```
+   ENCRYPTION_KEY=your_32_byte_encryption_key
+   JWT_SECRET=your_jwt_secret
+   SECURE_PASSCODE=your_secure_passcode
+   ```
+   Make sure to replace the placeholders with secure, random values.
 
-4. Run the development server:
+4. Build the application:
    ```bash
-   npm run dev
+   npm run build
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the app in action!
+## 💻 Running the Application
+
+1. Start the server:
+   ```bash
+   npm start
+   ```
+
+2. Open your browser and navigate to `http://localhost:3000`
+
+3. Enter the secure passcode you set in the `.env.local` file to access the app
 
 ## 📖 Usage
 
-1. **Create a New Entry**: Click the "+" button to add a new password entry
-2. **Generate a Password**: Use the built-in generator for strong, unique passwords
-3. **Copy a Password**: Click on an entry to securely copy the password to your clipboard
-4. **Auto-clear**: Clipboard contents are automatically cleared after 10 seconds for added security
+1. **First Run**: On first run, the app will automatically create and initialize the SQLite database.
+
+2. **Create a New Entry**: Click the "+" button to add a new password entry.
+
+3. **Generate a Password**: Use the built-in generator for strong, unique passwords.
+
+4. **Copy a Password**: Click on an entry to securely copy the password to your clipboard.
+
+5. **Auto-clear**: Clipboard contents are automatically cleared after 10 seconds for added security.
 
 ## 🔒 Security
 
-- All passwords are encrypted using AES-256 before storage
-- HTTPS is used for all data transmissions
+- All passwords are encrypted using AES-256 before storage in the SQLite database
+- The database file is stored locally and not synced to any cloud service by default
+- HTTPS is used for all data transmissions when deployed
 - Clipboard contents are automatically cleared
-- Rate limiting protects against brute force attacks
+- JWT is used for session management
+- Passcode is required to access the app
+
+## 🛠️ Development
+
+To run the application in development mode:
+
+```bash
+npm run dev
+```
+
+This will start the development server with hot-reloading enabled.
 
 ## 🤝 Contributing
 
