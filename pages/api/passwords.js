@@ -1,60 +1,66 @@
 import { verifyToken } from '../../lib/auth'
-import { encrypt, decrypt } from '../../lib/encryption'
+import { encryptPassword as encrypt, decryptPassword as decrypt } from '../../lib/encryption'
 import { getPasswords, getPassword, addPassword, updatePassword, deletePassword } from '../../lib/db'
 
 export default async function handler(req, res) {
   const token = req.headers.authorization?.split(' ')[1];
+  const decoded = verifyToken(token);
   
-  if (!token || !verifyToken(token)) {
+  if (!decoded) {
     return res.status(401).json({ message: 'Invalid token' });
   }
 
-  console.log('Token verified successfully');
+  const userId = decoded.userId;
 
   switch (req.method) {
     case 'GET':
       try {
-        const passwords = await getPasswords()
-        res.status(200).json(passwords)
+        console.log('Fetching passwords for user:', userId);
+        const passwords = await getPasswords(userId);
+        console.log('Fetched passwords:', passwords);
+        res.status(200).json(passwords);
       } catch (error) {
-        res.status(500).json({ message: 'Error retrieving passwords' })
+        res.status(500).json({ message: 'Error retrieving passwords' });
       }
-      break
+      break;
 
     case 'POST':
       try {
-        const { description, password } = req.body
-        const encryptedPassword = encrypt(password)
-        const id = await addPassword(description, encryptedPassword)
-        res.status(201).json({ id, description })
+        const { description, password } = req.body;
+        const encryptedPassword = encrypt(password);
+        console.log('Adding password for user:', userId);
+        const id = await addPassword(userId, description, encryptedPassword);
+        console.log('Password added with id:', id);
+        res.status(201).json({ id, description });
       } catch (error) {
-        res.status(500).json({ message: 'Error creating password' })
+        console.error('Error creating password:', error);
+        res.status(500).json({ message: 'Error creating password', error: error.message });
       }
-      break
+      break;
 
     case 'PUT':
       try {
-        const { id, description, password } = req.body
-        const encryptedPassword = encrypt(password)
-        await updatePassword(id, description, encryptedPassword)
-        res.status(200).json({ message: 'Password updated successfully' })
+        const { id, description, password } = req.body;
+        const encryptedPassword = encrypt(password);
+        await updatePassword(id, userId, description, encryptedPassword);
+        res.status(200).json({ message: 'Password updated successfully' });
       } catch (error) {
-        res.status(500).json({ message: 'Error updating password' })
+        res.status(500).json({ message: 'Error updating password' });
       }
-      break
+      break;
 
     case 'DELETE':
       try {
-        const { id } = req.body
-        await deletePassword(id)
-        res.status(200).json({ message: 'Password deleted successfully' })
+        const { id } = req.body;
+        await deletePassword(id, userId);
+        res.status(200).json({ message: 'Password deleted successfully' });
       } catch (error) {
-        res.status(500).json({ message: 'Error deleting password' })
+        res.status(500).json({ message: 'Error deleting password' });
       }
-      break
+      break;
 
     default:
-      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE'])
-      res.status(405).end(`Method ${req.method} Not Allowed`)
+      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

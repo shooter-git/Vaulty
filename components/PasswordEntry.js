@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import { decryptPassword } from '../lib/encryption'
 
 export default function PasswordEntry({ password }) {
   const [isCopied, setIsCopied] = useState(false)
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(password.password)
+      const decryptedPassword = decryptPassword(password.password)
+      await navigator.clipboard.writeText(decryptedPassword)
       setIsCopied(true)
       setTimeout(() => setIsCopied(false), 2000)
       

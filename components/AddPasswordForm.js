@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { generatePassword } from '../lib/passwordGenerator'
+import { encryptPassword } from '../lib/encryption'
 
 export default function AddPasswordForm({ onAddPassword }) {
   const [description, setDescription] = useState('')
@@ -7,7 +8,8 @@ export default function AddPasswordForm({ onAddPassword }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onAddPassword({ description, password })
+    const encryptedPassword = encryptPassword(password)
+    onAddPassword({ description, password: encryptedPassword })
     setDescription('')
     setPassword('')
   }

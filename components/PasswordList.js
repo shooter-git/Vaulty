@@ -17,9 +17,27 @@ export default function PasswordList() {
   }
 
   const handleAddPassword = async (newPassword) => {
-    // Implement API call to add a new password
-    // For now, we'll just add it to the local state
-    setPasswords([...passwords, { id: Date.now(), ...newPassword }])
+    try {
+      const response = await fetch('/api/passwords', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(newPassword)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to add password');
+      }
+
+      const addedPassword = await response.json();
+      setPasswords([...passwords, addedPassword]);
+    } catch (error) {
+      console.error('Error adding password:', error);
+      // Handle error (e.g., show error message to user)
+    }
   }
 
   return (
