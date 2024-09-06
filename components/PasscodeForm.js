@@ -37,7 +37,7 @@ export default function PasscodeForm({ onSubmit }) {
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <button
         type="submit"
-        className="w-full p-2 bg-kali-accent dark:bg-synthwave-accent text-kali-text dark:text-synthwave-text rounded hover:opacity-80 transition-opacity"
+        className="w-full p-2 bg-kali-accent dark:bg-synthwave-accent text-black dark:text-black rounded hover:opacity-80 transition-opacity"
       >
         Submit
       </button>

@@ -12,8 +12,8 @@ export default function Layout({ children }) {
   const toggleDropdown = () => setShowDropdown(!showDropdown)
 
   const handleLogout = () => {
-    logout() // This will now handle the logout and redirection
-    setShowDropdown(false) // Close the dropdown after logout
+    logout()
+    setShowDropdown(false)
   }
 
   return (
@@ -22,18 +22,19 @@ export default function Layout({ children }) {
         <title>Vaulty</title>
         <meta name="description" content="A secure password manager PWA" />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
       </Head>
 
       <header className="bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Vaulty</h1>
+          <h1 className="text-xl font-bold">Vaulty</h1>
           <div className="flex items-center space-x-4">
             <ThemeToggle />
             {isAuthenticated && (
               <div className="relative">
                 <button
                   onClick={toggleDropdown}
-                  className="bg-kali-accent dark:bg-synthwave-accent text-kali-text dark:text-synthwave-text px-3 py-1 rounded-full text-sm focus:outline-none"
+                  className="bg-kali-accent dark:bg-synthwave-accent text-black dark:text-black px-3 py-1 rounded text-sm focus:outline-none"
                 >
                   {username}
                 </button>
@@ -53,7 +54,7 @@ export default function Layout({ children }) {
         </div>
       </header>
 
-      <main className="flex-grow container mx-auto p-4">
+      <main className="flex-grow container mx-auto p-4 bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text">
         {children}
       </main>
     </div>

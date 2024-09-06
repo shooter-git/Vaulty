@@ -25,7 +25,7 @@ export default function PasswordEntry({ password }) {
       <span className="font-semibold text-kali-text dark:text-synthwave-text">{password.description}</span>
       <button
         onClick={copyToClipboard}
-        className="px-4 py-2 bg-kali-accent dark:bg-synthwave-accent text-kali-text dark:text-synthwave-text rounded hover:opacity-80 transition-opacity"
+        className="px-4 py-2 bg-kali-accent dark:bg-synthwave-accent text-black dark:text-black rounded hover:opacity-80 transition-opacity"
       >
         {isCopied ? 'Copied!' : 'Copy'}
       </button>

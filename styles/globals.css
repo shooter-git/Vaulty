@@ -1,6 +1,30 @@
+/* eslint-disable */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /* Dark mode colors */
+  --background-color-dark: #0C0C0C;
+  --text-color-dark: #00FF00;
+  --border-color-dark: #1E1E1E;
+  --card-background-dark: #1E1E1E;
+  --button-primary-dark: #00FF00;
+  --button-primary-hover-dark: #33ff33;
+  --terminal-background-dark: #0C0C0C;
+  --terminal-text-dark: #00FF00;
+
+  /* Synthwave cyberpunk color scheme for synth mode */
+  --background-color-synth: #1f1b24;
+  --text-color-synth: #ffffff;
+  --border-color-synth: #3c3a45;
+  --card-background-synth: #27212e;
+  --button-primary-synth: #ff9ff3;
+  --button-primary-hover-synth: #ffc6f0;
+  --terminal-background-synth: #1f1b24;
+  --terminal-text-synth: #ffffff;
+  --highlight-color-synth: #ff9ff3;
+}
 
 /* Custom styles that can't be easily achieved with Tailwind */
 body {

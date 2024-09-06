@@ -7,9 +7,9 @@ const ThemeToggle = () => {
   return (
     <button 
       onClick={toggleTheme} 
-      className="p-2 rounded-full bg-kali-accent dark:bg-synthwave-accent text-kali-text dark:text-synthwave-text transition-colors duration-200 hover:bg-opacity-80"
+      className="w-8 h-8 flex items-center justify-center rounded bg-kali-accent dark:bg-synthwave-accent text-kali-primary dark:text-synthwave-primary transition-colors duration-200 hover:bg-opacity-80 font-mono text-sm"
     >
-      {themeName === 'kali' ? '🌙' : '☀️'}
+      {themeName === 'kali' ? 'C:\\' : '>'}
     </button>
   );
 };

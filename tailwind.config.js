@@ -8,15 +8,15 @@ module.exports = {
       colors: {
         kali: {
           primary: '#0c0c0c',
-          secondary: '#141414',
-          text: '#ffffff',
-          accent: '#0abdc6',
+          secondary: '#1E1E1E',
+          text: '#00FF00',
+          accent: '#00FF00',
         },
         synthwave: {
-          primary: '#2b213a',
-          secondary: '#4c3a6d',
+          primary: '#1f1b24',
+          secondary: '#27212e',
           text: '#ffffff',
-          accent: '#ff00ff',
+          accent: '#ff9ff3',
         },
       },
     },

@@ -31,7 +31,7 @@ export default function AddPasswordForm({ onAddPassword }) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-kali-accent focus:ring focus:ring-kali-accent focus:ring-opacity-50 dark:bg-synthwave-secondary dark:text-synthwave-text"
+          className="mt-1 block w-full px-3 py-2 text-base rounded-md border-kali-accent dark:border-synthwave-accent bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text focus:border-kali-accent dark:focus:border-synthwave-accent focus:ring focus:ring-kali-accent dark:focus:ring-synthwave-accent focus:ring-opacity-50"
         />
       </div>
       <div>
@@ -45,7 +45,7 @@ export default function AddPasswordForm({ onAddPassword }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="flex-1 rounded-none rounded-l-md border-gray-300 focus:border-kali-accent focus:ring focus:ring-kali-accent focus:ring-opacity-50 dark:bg-synthwave-secondary dark:text-synthwave-text"
+            className="flex-1 px-3 py-2 text-base rounded-l-md border-kali-accent dark:border-synthwave-accent bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text focus:border-kali-accent dark:focus:border-synthwave-accent focus:ring focus:ring-kali-accent dark:focus:ring-synthwave-accent focus:ring-opacity-50"
           />
           <button
             type="button"
@@ -58,7 +58,7 @@ export default function AddPasswordForm({ onAddPassword }) {
       </div>
       <button
         type="submit"
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-kali-text dark:text-synthwave-text bg-kali-accent dark:bg-synthwave-accent hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-kali-accent dark:focus:ring-synthwave-accent"
+        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-black dark:text-black bg-kali-accent dark:bg-synthwave-accent hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-kali-accent dark:focus:ring-synthwave-accent"
       >
         Add Password
       </button>

@@ -70,7 +70,7 @@ export default function AddPasswordModal({ isOpen, onClose, onAddPassword }) {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-kali-accent dark:bg-synthwave-accent text-kali-text dark:text-synthwave-text rounded hover:opacity-80"
+              className="px-4 py-2 bg-kali-accent dark:bg-synthwave-accent text-black dark:text-black rounded hover:opacity-80"
             >
               Add Password
             </button>

@@ -46,7 +46,7 @@ export default function PasswordList() {
         <h2 className="text-2xl font-bold text-kali-text dark:text-synthwave-text">Passwords</h2>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-kali-accent dark:bg-synthwave-accent text-kali-text dark:text-synthwave-text rounded hover:opacity-80"
+          className="px-4 py-2 bg-kali-accent dark:bg-synthwave-accent text-black dark:text-black rounded hover:opacity-80"
         >
           Add Password
         </button>
