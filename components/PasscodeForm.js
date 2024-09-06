@@ -32,6 +32,7 @@ export default function PasscodeForm({ onSubmit }) {
         minLength={6}
         maxLength={12}
         required
+        autoComplete="current-password"
       />
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <button

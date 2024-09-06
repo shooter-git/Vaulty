@@ -33,6 +33,7 @@ export default function SignUp({ onSignUp }) {
           onChange={(e) => setUsername(e.target.value)}
           required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          autoComplete="username"
         />
       </div>
       <div>
@@ -46,6 +47,7 @@ export default function SignUp({ onSignUp }) {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={8}
+          autoComplete="new-password"
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         />
       </div>
