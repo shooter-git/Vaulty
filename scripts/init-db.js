@@ -29,6 +29,15 @@ async function initDb() {
     `);
 
     console.log('Database initialized successfully');
+
+    // Log the schema
+    const tables = await db.all("SELECT name FROM sqlite_master WHERE type='table'");
+    for (const table of tables) {
+      const columns = await db.all(`PRAGMA table_info(${table.name})`);
+      console.log(`Table: ${table.name}`);
+      console.log('Columns:', columns);
+    }
+
     await db.close();
   } catch (error) {
     console.error('Error initializing database:', error);

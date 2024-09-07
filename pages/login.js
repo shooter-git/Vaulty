@@ -38,6 +38,7 @@ export default function Login() {
             required
             aria-required="true"
             className="mt-1 block w-full px-3 py-2 text-base rounded-md border-kali-accent dark:border-synthwave-accent bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text focus:border-kali-accent dark:focus:border-synthwave-accent focus:ring focus:ring-kali-accent dark:focus:ring-synthwave-accent focus:ring-opacity-50"
+            autoComplete="username"
           />
         </div>
         <div>
@@ -53,6 +54,7 @@ export default function Login() {
             required
             aria-required="true"
             className="mt-1 block w-full px-3 py-2 text-base rounded-md border-kali-accent dark:border-synthwave-accent bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text focus:border-kali-accent dark:focus:border-synthwave-accent focus:ring focus:ring-kali-accent dark:focus:ring-synthwave-accent focus:ring-opacity-50"
+            autoComplete="current-password"
           />
         </div>
         {error && <p role="alert" className="text-red-500 text-sm">{error}</p>}

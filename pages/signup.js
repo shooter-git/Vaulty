@@ -17,7 +17,11 @@ export default function Signup() {
       await signup(username, password)
       router.push('/') // Redirect to home page after successful signup
     } catch (err) {
-      setError('Signup failed. Please try again.')
+      if (err.message === 'Username already exists') {
+        setError('Username already exists. Please choose a different username.')
+      } else {
+        setError('Signup failed. Please try again.')
+      }
     }
   }
 
@@ -37,6 +41,7 @@ export default function Signup() {
             onChange={(e) => setUsername(e.target.value)}
             required
             aria-required="true"
+            autoComplete="username"
             className="mt-1 block w-full px-3 py-2 text-base rounded-md border-kali-accent dark:border-synthwave-accent bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text focus:border-kali-accent dark:focus:border-synthwave-accent focus:ring focus:ring-kali-accent dark:focus:ring-synthwave-accent focus:ring-opacity-50"
           />
         </div>
@@ -52,6 +57,7 @@ export default function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             required
             aria-required="true"
+            autoComplete="new-password"
             className="mt-1 block w-full px-3 py-2 text-base rounded-md border-kali-accent dark:border-synthwave-accent bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text focus:border-kali-accent dark:focus:border-synthwave-accent focus:ring focus:ring-kali-accent dark:focus:ring-synthwave-accent focus:ring-opacity-50"
           />
         </div>

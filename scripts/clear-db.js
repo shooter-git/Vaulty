@@ -1,51 +1,51 @@
 const sqlite3 = require('sqlite3').verbose();
+const { open } = require('sqlite');
+const path = require('path');
 
-// Replace with your actual database file path
-const DB_PATH = './secure_clipboard.sqlite';
+async function clearDb() {
+  let db;
+  try {
+    db = await open({
+      filename: path.join(process.cwd(), 'secure_clipboard.sqlite'),
+      driver: sqlite3.Database
+    });
 
-const db = new sqlite3.Database(DB_PATH, (err) => {
-  if (err) {
-    console.error('Error opening database:', err.message);
-    return;
-  }
-  console.log('Connected to the database.');
+    console.log('Connected to the database.');
 
-  // Get all table names
-  db.all("SELECT name FROM sqlite_master WHERE type='table'", [], (err, tables) => {
-    if (err) {
-      console.error('Error fetching tables:', err.message);
-      return;
+    // Start a transaction
+    await db.run('BEGIN TRANSACTION');
+
+    // Get all table names
+    const tables = await db.all("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'");
+
+    // Clear data from each table
+    for (const table of tables) {
+      await db.run(`DELETE FROM ${table.name}`);
+      console.log(`Cleared table: ${table.name}`);
     }
 
-    // Delete data from each table
-    tables.forEach(table => {
-      if (table.name !== 'sqlite_sequence') {
-        db.run(`DELETE FROM ${table.name}`, [], function(err) {
-          if (err) {
-            console.error(`Error clearing table ${table.name}:`, err.message);
-          } else {
-            console.log(`Cleared table ${table.name}`);
-          }
-        });
-      }
-    });
-
     // Reset auto-increment counters
-    db.run("DELETE FROM sqlite_sequence", [], function(err) {
-      if (err) {
-        console.error('Error resetting auto-increment:', err.message);
-      } else {
-        console.log('Reset auto-increment counters');
-      }
-    });
+    for (const table of tables) {
+      await db.run(`DELETE FROM sqlite_sequence WHERE name='${table.name}'`);
+      console.log(`Reset auto-increment for table: ${table.name}`);
+    }
 
-    // Close the database connection
-    db.close((err) => {
-      if (err) {
-        console.error('Error closing database:', err.message);
-      } else {
-        console.log('Database connection closed.');
-      }
-    });
-  });
-});
+    // Commit the transaction
+    await db.run('COMMIT');
+
+    console.log('Database cleared successfully.');
+  } catch (error) {
+    console.error('Error clearing database:', error);
+    if (db) {
+      await db.run('ROLLBACK');
+      console.log('Changes rolled back due to error.');
+    }
+  } finally {
+    if (db) {
+      await db.close();
+      console.log('Database connection closed.');
+    }
+  }
+}
+
+clearDb();

@@ -1,57 +1,62 @@
-import { verifyUser, generateToken, createUser } from '../../lib/auth'
-import { openDb } from '../../lib/db'
+import { verifyUser, generateToken, createUser } from '../../lib/auth-server'
+import { openDb, closeDb } from '../../lib/db'
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const { action, username, password } = req.body;
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', ['POST']);
+    return res.status(405).json({ message: `Method ${req.method} Not Allowed` });
+  }
 
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required' });
-    }
+  const { action, username, password } = req.body;
 
-    try {
-      const db = await openDb();
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required' });
+  }
 
-      if (action === 'signup') {
-        console.log('Starting signup process for username:', username);
-        
-        // Check if user already exists
-        const existingUser = await db.get('SELECT * FROM users WHERE username = ?', username);
-        if (existingUser) {
-          return res.status(409).json({ message: 'Username already exists' });
-        }
+  try {
+    await openDb();
+    console.log('Database connection opened');
 
-        const userId = await createUser(db, username, password);
+    if (action === 'signup') {
+      console.log('Starting signup process for username:', username);
+      
+      try {
+        const userId = await createUser(username, password);
         console.log('User created with ID:', userId);
         
-        if (!userId) {
-          return res.status(500).json({ message: 'User creation failed' });
-        }
-
         const token = generateToken(userId);
         console.log('Token generated successfully');
         res.status(201).json({ token, username });
-
-      } else if (action === 'login') {
-        const user = await verifyUser(db, username, password);
-        if (user) {
-          const token = generateToken(user.id);
-          res.status(200).json({ token, username: user.username });
-        } else {
-          res.status(401).json({ message: 'Invalid credentials' });
+      } catch (error) {
+        console.error('Error in signup process:', error);
+        console.error('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+        if (error.message === 'Username already exists') {
+          return res.status(409).json({ message: 'Username already exists' });
         }
-
-      } else {
-        res.status(400).json({ message: 'Invalid action' });
+        throw error;
       }
-
-    } catch (error) {
-      console.error('Auth error:', error);
-      res.status(500).json({ message: 'Internal server error', error: error.message });
+    } else if (action === 'login') {
+      console.log('Starting login process for username:', username);
+      
+      const user = await verifyUser(username, password);
+      if (user) {
+        const token = generateToken(user.id);
+        console.log('Login successful, token generated');
+        res.status(200).json({ token, username: user.username });
+      } else {
+        console.log('Login failed: Invalid credentials');
+        res.status(401).json({ message: 'Invalid credentials' });
+      }
+    } else {
+      console.log('Invalid action requested:', action);
+      res.status(400).json({ message: 'Invalid action' });
     }
-
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+  } catch (error) {
+    console.error('Auth error:', error);
+    console.error('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  } finally {
+    await closeDb();
+    console.log('Database connection closed');
   }
 }

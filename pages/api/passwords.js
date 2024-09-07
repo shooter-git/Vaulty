@@ -20,6 +20,7 @@ export default async function handler(req, res) {
         console.log('Fetched passwords:', passwords);
         res.status(200).json(passwords);
       } catch (error) {
+        console.error('Error retrieving passwords:', error);
         res.status(500).json({ message: 'Error retrieving passwords' });
       }
       break;

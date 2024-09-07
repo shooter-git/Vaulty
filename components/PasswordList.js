@@ -11,10 +11,22 @@ export default function PasswordList() {
   }, [])
 
   const fetchPasswords = async () => {
-    // Implement API call to fetch passwords
-    // For now, we'll use an empty array
-    setPasswords([])
-  }
+    try {
+      const response = await fetch('/api/passwords', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setPasswords(data);
+      } else {
+        console.error('Failed to fetch passwords');
+      }
+    } catch (error) {
+      console.error('Error fetching passwords:', error);
+    }
+  };
 
   const handleAddPassword = async (newPassword) => {
     try {
@@ -27,16 +39,56 @@ export default function PasswordList() {
         body: JSON.stringify(newPassword)
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to add password');
+      if (response.ok) {
+        const addedPassword = await response.json();
+        setPasswords([...passwords, addedPassword]);
+      } else {
+        console.error('Failed to add password')
       }
-
-      const addedPassword = await response.json();
-      setPasswords([...passwords, addedPassword]);
     } catch (error) {
       console.error('Error adding password:', error);
-      // Handle error (e.g., show error message to user)
+    }
+  }
+
+  const handleEditPassword = async (id, updatedPassword) => {
+    try {
+      const response = await fetch(`/api/passwords`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ id, ...updatedPassword })
+      });
+
+      if (response.ok) {
+        setPasswords(passwords.map(p => p.id === id ? { ...p, ...updatedPassword } : p));
+      } else {
+        console.error('Failed to update password')
+      }
+    } catch (error) {
+      console.error('Error updating password:', error);
+    }
+  }
+
+  const handleDeletePassword = async (id) => {
+    try {
+      const response = await fetch(`/api/passwords`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ id })
+      });
+
+      if (response.ok) {
+        setPasswords(passwords.filter(p => p.id !== id));
+      } else {
+        console.error('Failed to delete password')
+      }
+    } catch (error) {
+      console.error('Error deleting password:', error);
     }
   }
 
@@ -56,7 +108,12 @@ export default function PasswordList() {
       ) : (
         <div className="space-y-4">
           {passwords.map((password) => (
-            <PasswordEntry key={password.id} password={password} />
+            <PasswordEntry 
+              key={password.id} 
+              password={password} 
+              onEdit={handleEditPassword}
+              onDelete={handleDeletePassword}
+            />
           ))}
         </div>
       )}
