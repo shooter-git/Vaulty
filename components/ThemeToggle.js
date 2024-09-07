@@ -7,7 +7,7 @@ const ThemeToggle = () => {
   return (
     <button 
       onClick={toggleTheme} 
-      className="w-8 h-8 flex items-center justify-center rounded bg-kali-accent dark:bg-synthwave-accent text-kali-primary dark:text-synthwave-primary transition-colors duration-200 hover:bg-opacity-80 font-mono text-sm"
+      className="px-3 py-1 flex items-center justify-center rounded bg-kali-accent dark:bg-synthwave-accent text-kali-primary dark:text-synthwave-primary transition-colors duration-200 hover:bg-opacity-80 font-mono text-sm"
     >
       {themeName === 'kali' ? 'C:\\' : '>'}
     </button>

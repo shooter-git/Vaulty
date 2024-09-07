@@ -30,14 +30,19 @@ export default async function handler(req, res) {
         break;
 
       case 'PUT':
-        const { id: updateId, description: updateDesc, password: updatePass } = req.body;
-        const updatedEncryptedPassword = encryptPassword(updatePass);
-        await updatePassword(updateId, userId, updateDesc, updatedEncryptedPassword);
+        const { id: updateId, description: updateDesc, encrypted_password } = req.body;
+        if (!updateId || !updateDesc || !encrypted_password) {
+          return res.status(400).json({ message: 'ID, description, and encrypted password are required' });
+        }
+        await updatePassword(updateId, userId, updateDesc, encrypted_password);
         res.status(200).json({ message: 'Password updated successfully' });
         break;
 
       case 'DELETE':
         const { id: deleteId } = req.body;
+        if (!deleteId) {
+          return res.status(400).json({ message: 'Password ID is required' });
+        }
         await deletePassword(deleteId, userId);
         res.status(200).json({ message: 'Password deleted successfully' });
         break;
