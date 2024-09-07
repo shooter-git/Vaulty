@@ -48,14 +48,13 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     console.error('Error in password operation:', error);
-    console.error('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 }
 
 async function getPasswords(userId) {
   const sql = 'SELECT id, description, encrypted_password FROM passwords WHERE user_id = ?';
-  return await getQuery(sql, [userId]) || [];
+  return await getQuery(sql, [userId]);
 }
 
 async function addPassword(userId, description, encryptedPassword) {

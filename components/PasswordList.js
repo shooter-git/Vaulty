@@ -7,6 +7,7 @@ export default function PasswordList() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [sortOrder, setSortOrder] = useState('asc') // 'asc' or 'desc'
 
   useEffect(() => {
     fetchPasswords()
@@ -112,33 +113,49 @@ export default function PasswordList() {
     }
   }
 
+  const toggleSortOrder = () => {
+    setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
+  }
+
+  const sortedPasswords = [...passwords].sort((a, b) => {
+    const compareResult = a.description.localeCompare(b.description);
+    return sortOrder === 'asc' ? compareResult : -compareResult;
+  });
+
   if (isLoading) {
     return <div className="text-center text-kali-text dark:text-synthwave-text">Loading passwords...</div>
   }
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-kali-text dark:text-synthwave-text">Passwords</h2>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-kali-accent dark:bg-synthwave-accent text-black dark:text-black rounded hover:opacity-80 transition-opacity"
-        >
-          Add Password
-        </button>
+      <div className="flex justify-end mb-3">
+        <div className="space-x-2">
+          <button
+            onClick={toggleSortOrder}
+            className="px-3 py-1 text-sm bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text rounded hover:opacity-80 transition-opacity"
+          >
+            Sort {sortOrder === 'asc' ? '↑' : '↓'}
+          </button>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-3 py-1 text-sm bg-kali-accent dark:bg-synthwave-accent text-black dark:text-black rounded hover:opacity-80 transition-opacity"
+          >
+            Add Password
+          </button>
+        </div>
       </div>
       {error && (
-        <p className="text-red-500 mb-4 p-2 bg-red-100 border border-red-400 rounded">
+        <p className="text-red-500 mb-3 p-2 bg-red-100 border border-red-400 rounded text-sm">
           {error}
         </p>
       )}
-      {passwords.length === 0 ? (
-        <p className="text-kali-text dark:text-synthwave-text text-center p-4 bg-kali-secondary dark:bg-synthwave-secondary rounded">
+      {sortedPasswords.length === 0 ? (
+        <p className="text-kali-text dark:text-synthwave-text text-center p-3 bg-kali-secondary dark:bg-synthwave-secondary rounded text-sm">
           No passwords added yet. Click "Add Password" to get started.
         </p>
       ) : (
-        <div className="space-y-4">
-          {passwords.map((password) => (
+        <div className="space-y-3">
+          {sortedPasswords.map((password) => (
             <PasswordEntry 
               key={password.id} 
               password={password} 
