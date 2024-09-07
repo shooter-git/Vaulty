@@ -1,6 +1,6 @@
-import { verifyToken } from '../../lib/auth'
-import { encryptPassword as encrypt, decryptPassword as decrypt } from '../../lib/encryption'
-import { getPasswords, getPassword, addPassword, updatePassword, deletePassword } from '../../lib/db'
+import { verifyToken } from '../../lib/auth-server';
+import { openDb, closeDb, runQuery, getQuery } from '../../lib/db';
+import { encryptPassword, decryptPassword } from '../../lib/encryption';
 
 export default async function handler(req, res) {
   const token = req.headers.authorization?.split(' ')[1];
@@ -12,56 +12,64 @@ export default async function handler(req, res) {
 
   const userId = decoded.userId;
 
-  switch (req.method) {
-    case 'GET':
-      try {
-        console.log('Fetching passwords for user:', userId);
+  try {
+    await openDb();
+
+    switch (req.method) {
+      case 'GET':
         const passwords = await getPasswords(userId);
-        console.log('Fetched passwords:', passwords);
         res.status(200).json(passwords);
-      } catch (error) {
-        console.error('Error retrieving passwords:', error);
-        res.status(500).json({ message: 'Error retrieving passwords' });
-      }
-      break;
+        break;
 
-    case 'POST':
-      try {
+      case 'POST':
         const { description, password } = req.body;
-        const encryptedPassword = encrypt(password);
-        console.log('Adding password for user:', userId);
+        const encryptedPassword = encryptPassword(password);
         const id = await addPassword(userId, description, encryptedPassword);
-        console.log('Password added with id:', id);
         res.status(201).json({ id, description });
-      } catch (error) {
-        console.error('Error creating password:', error);
-        res.status(500).json({ message: 'Error creating password', error: error.message });
-      }
-      break;
+        break;
 
-    case 'PUT':
-      try {
-        const { id, description, password } = req.body;
-        const encryptedPassword = encrypt(password);
-        await updatePassword(id, userId, description, encryptedPassword);
+      case 'PUT':
+        const { id: updateId, description: updateDesc, password: updatePass } = req.body;
+        const updatedEncryptedPassword = encryptPassword(updatePass);
+        await updatePassword(updateId, userId, updateDesc, updatedEncryptedPassword);
         res.status(200).json({ message: 'Password updated successfully' });
-      } catch (error) {
-        res.status(500).json({ message: 'Error updating password' });
-      }
-      break;
+        break;
 
-    case 'DELETE':
-      try {
-        const { id } = req.body;
-        await deletePassword(id, userId);
+      case 'DELETE':
+        const { id: deleteId } = req.body;
+        await deletePassword(deleteId, userId);
         res.status(200).json({ message: 'Password deleted successfully' });
-      } catch (error) {
-        res.status(500).json({ message: 'Error deleting password' });
-      }
-      break;
+        break;
 
-    default:
-      res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
+      default:
+        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
+    }
+  } catch (error) {
+    console.error('Error in password operation:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  } finally {
+    await closeDb();
   }
+}
+
+async function getPasswords(userId) {
+  const sql = 'SELECT id, description, encrypted_password FROM passwords WHERE user_id = ?';
+  return await getQuery(sql, [userId]) || [];
+}
+
+async function addPassword(userId, description, encryptedPassword) {
+  const sql = 'INSERT INTO passwords (user_id, description, encrypted_password) VALUES (?, ?, ?)';
+  const result = await runQuery(sql, [userId, description, encryptedPassword]);
+  return result.lastID;
+}
+
+async function updatePassword(id, userId, description, encryptedPassword) {
+  const sql = 'UPDATE passwords SET description = ?, encrypted_password = ? WHERE id = ? AND user_id = ?';
+  await runQuery(sql, [description, encryptedPassword, id, userId]);
+}
+
+async function deletePassword(id, userId) {
+  const sql = 'DELETE FROM passwords WHERE id = ? AND user_id = ?';
+  await runQuery(sql, [id, userId]);
 }
