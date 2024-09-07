@@ -1,17 +1,23 @@
 import { useState, useEffect } from 'react'
 import PasswordEntry from './PasswordEntry'
 import AddPasswordModal from './AddPasswordModal'
+import ActionBar from './Actionbar'
 
 export default function PasswordList() {
   const [passwords, setPasswords] = useState([])
+  const [filteredPasswords, setFilteredPasswords] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [sortOrder, setSortOrder] = useState('asc') // 'asc' or 'desc'
+  const [sortOrder, setSortOrder] = useState('asc')
 
   useEffect(() => {
     fetchPasswords()
   }, [])
+
+  useEffect(() => {
+    setFilteredPasswords(passwords)
+  }, [passwords])
 
   const fetchPasswords = async () => {
     try {
@@ -117,7 +123,14 @@ export default function PasswordList() {
     setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
   }
 
-  const sortedPasswords = [...passwords].sort((a, b) => {
+  const handleSearch = (searchTerm) => {
+    const filtered = passwords.filter(password => 
+      password.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredPasswords(filtered);
+  }
+
+  const sortedPasswords = [...filteredPasswords].sort((a, b) => {
     const compareResult = a.description.localeCompare(b.description);
     return sortOrder === 'asc' ? compareResult : -compareResult;
   });
@@ -128,22 +141,12 @@ export default function PasswordList() {
 
   return (
     <div>
-      <div className="flex justify-end mb-3">
-        <div className="space-x-2">
-          <button
-            onClick={toggleSortOrder}
-            className="px-3 py-1 text-sm bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text rounded hover:opacity-80 transition-opacity"
-          >
-            Sort {sortOrder === 'asc' ? '↑' : '↓'}
-          </button>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-3 py-1 text-sm bg-kali-accent dark:bg-synthwave-accent text-black dark:text-black rounded hover:opacity-80 transition-opacity"
-          >
-            Add Password
-          </button>
-        </div>
-      </div>
+      <ActionBar 
+        onSearch={handleSearch}
+        sortOrder={sortOrder}
+        onToggleSort={toggleSortOrder}
+        onAddPassword={() => setIsModalOpen(true)}
+      />
       {error && (
         <p className="text-red-500 mb-3 p-2 bg-red-100 border border-red-400 rounded text-sm">
           {error}
@@ -151,7 +154,7 @@ export default function PasswordList() {
       )}
       {sortedPasswords.length === 0 ? (
         <p className="text-kali-text dark:text-synthwave-text text-center p-3 bg-kali-secondary dark:bg-synthwave-secondary rounded text-sm">
-          No passwords added yet. Click "Add Password" to get started.
+          No passwords found. Add a new password or try a different search term.
         </p>
       ) : (
         <div className="space-y-3">
