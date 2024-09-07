@@ -22,9 +22,12 @@ async function initDb() {
       )
     `);
 
-    // Create passwords table
+    // Drop existing passwords table if it exists
+    await db.run(`DROP TABLE IF EXISTS passwords`);
+
+    // Create passwords table with correct structure
     await db.run(`
-      CREATE TABLE IF NOT EXISTS passwords (
+      CREATE TABLE passwords (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         description TEXT NOT NULL,
@@ -34,13 +37,6 @@ async function initDb() {
         FOREIGN KEY (user_id) REFERENCES users(id)
       )
     `);
-
-    // Check if encrypted_password column exists, if not, add it
-    const tableInfo = await db.all("PRAGMA table_info(passwords)");
-    if (!tableInfo.some(column => column.name === 'encrypted_password')) {
-      await db.run("ALTER TABLE passwords ADD COLUMN encrypted_password TEXT NOT NULL DEFAULT ''");
-      console.log("Added encrypted_password column to passwords table");
-    }
 
     console.log('Database initialized successfully');
 
