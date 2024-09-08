@@ -8,6 +8,7 @@
 [![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://web.dev/progressive-web-apps/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
 A secure, lightweight Progressive Web App for managing passwords and sensitive information with ease!
 
@@ -26,8 +27,32 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
 - ⚡ **Fast and Responsive**: Built with Next.js for optimal performance
 - 💾 **Lightweight Database**: Uses SQLite for simple, file-based data storage
 - 🌓 **Theme Toggle**: Switch between Kali and Synthwave themes
+- 🐳 **Docker Support**: Easy deployment with Docker
 
 ## 🚀 Installation
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm (v6 or later)
+- Docker (optional, for containerized deployment)
+
+### Environment Variables
+
+Copy the `.env.example` file to `.env.local` and fill in the required values:
+
+```bash
+cp .env.example .env.local
+```
+
+Generate secure values for `ENCRYPTION_KEY` and `JWT_SECRET`:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"  # For ENCRYPTION_KEY
+node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # For JWT_SECRET
+```
+
+### Standard Installation (Non-Docker)
 
 1. Clone the repository:
    ```bash
@@ -40,43 +65,64 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
    npm install
    ```
 
-3. Set up environment variables:
+3. Initialize the database:
    ```bash
-   cp .env.example .env.local
-   ```
-   Edit `.env.local` with your specific configuration:
-   ```bash
-   NEXT_PUBLIC_ENCRYPTION_KEY=your_64_character_hex_key_here
-   JWT_SECRET=your_jwt_secret_here
-   ```
-   Generate these values using:
-   ```bash
-   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"  # For NEXT_PUBLIC_ENCRYPTION_KEY
-   node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # For JWT_SECRET
+   npm run db:init
    ```
 
-4. Initialize the database:
-   ```bash
-   node update-schema.js
-   ```
-
-5. Build the application:
+4. Build the application:
    ```bash
    npm run build
    ```
 
-## 💻 Running the Application
-
-1. Start the server:
+5. Start the server:
    ```bash
    npm start
    ```
 
-2. Open your browser and navigate to `http://localhost:3000`
+6. Open your browser and navigate to `http://localhost:3000`
 
-3. Sign up for a new account or log in if you already have one
+### Docker Compose Installation
 
-## 📖 Usage
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/vaulty.git
+   cd vaulty
+   ```
+
+2. Build and start the Docker container:
+   ```bash
+   docker-compose up -d
+   ```
+
+3. Open your browser and navigate to `http://localhost:3000`
+
+### Docker Run Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/vaulty.git
+   cd vaulty
+   ```
+
+2. Build the Docker image:
+   ```bash
+   docker build -t vaulty .
+   ```
+
+3. Run the Docker container:
+   ```bash
+   docker run -d -p 3000:3000 \
+     -e ENCRYPTION_KEY=your_encryption_key \
+     -e JWT_SECRET=your_jwt_secret \
+     -v $(pwd)/secure_clipboard.sqlite:/app/secure_clipboard.sqlite \
+     --name vaulty \
+     vaulty
+   ```
+
+4. Open your browser and navigate to `http://localhost:3000`
+
+## 💻 Usage
 
 1. **Sign Up/Login**: Create a new account or log in to an existing one.
 
