@@ -1,4 +1,4 @@
-# 🔐 Vaulty - Secure Password Manager PWA
+# 🔐 Vaulty - Secure Password Manager & Clipboard PWA
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://web.dev/progressive-web-apps/)
 
-A secure, lightweight Progressive Web App for managing and retrieving passwords with ease!
+A secure, lightweight Progressive Web App for managing passwords and sensitive information with ease!
 
 [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Security](#-security) • [Contributing](#-contributing)
 
@@ -17,10 +17,11 @@ A secure, lightweight Progressive Web App for managing and retrieving passwords 
 
 ## 🌟 Features
 
-- 🔒 **Secure Password Storage**: Store your passwords safely with AES-256-GCM encryption
-- 📋 **One-Click Copy**: Retrieve passwords directly to your clipboard
+- 🔒 **Secure Information Storage**: Safely store passwords, notes, and other sensitive data with AES-256-GCM encryption
+- 📋 **Universal Secure Clipboard**: Use Vaulty as a secure clipboard for any type of sensitive information
 - 🔢 **User Authentication**: Secure app access with username and password
 - 🎲 **Password Generator**: Create strong, unique passwords with our built-in generator
+- 📱 **Cross-Device Syncing**: Access your secure information across all your devices
 - 🚀 **Progressive Web App**: Install and use offline on any device
 - ⚡ **Fast and Responsive**: Built with Next.js for optimal performance
 - 💾 **Lightweight Database**: Uses SQLite for simple, file-based data storage
@@ -79,24 +80,29 @@ A secure, lightweight Progressive Web App for managing and retrieving passwords 
 
 1. **Sign Up/Login**: Create a new account or log in to an existing one.
 
-2. **Add a New Password**: Click the "Add Password" button to add a new password entry.
+2. **Add New Entry**: Click the "Add Entry" button to add a new password or any sensitive information.
 
-3. **Generate a Password**: Use the built-in generator for strong, unique passwords.
+3. **Generate a Password**: Use the built-in generator for strong, unique passwords when needed.
 
-4. **Copy a Password**: Click on an entry to securely copy the password to your clipboard.
+4. **Copy Information**: Click on an entry to securely copy the stored information to your clipboard.
 
-5. **Edit/Delete Passwords**: Manage your stored passwords with easy edit and delete functions.
+5. **Edit/Delete Entries**: Manage your stored information with easy edit and delete functions.
 
-6. **Theme Toggle**: Switch between Kali and Synthwave themes using the toggle in the navbar.
+6. **Use as Secure Clipboard**: 
+   - For temporary storage: Add sensitive information as a new entry.
+   - To retrieve: Copy the information to your clipboard and use it where needed.
+   - For security: The clipboard is automatically cleared after 10 seconds.
+
+7. **Theme Toggle**: Switch between Kali and Synthwave themes using the toggle in the navbar.
 
 ## 🔒 Security
 
-- All passwords are encrypted using AES-256-GCM before storage in the SQLite database
+- All sensitive information (not just passwords) is encrypted using AES-256-GCM before storage
 - The database file is stored locally and not synced to any cloud service by default
 - HTTPS is used for all data transmissions when deployed
 - Clipboard contents are automatically cleared after 10 seconds
 - JWT is used for session management
-- Passwords are never stored in plain text
+- Information is never stored in plain text
 - End-to-end encryption is implemented for all sensitive data
 - Biometric access is available on supported devices (e.g., Face ID on iOS)
 
