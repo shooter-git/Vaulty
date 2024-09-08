@@ -13,11 +13,18 @@ RUN npm ci
 # Copy the rest of the application code
 COPY . .
 
+# Copy the .env.local file
+COPY .env.local .env.local
+
 # Build the Next.js app
 RUN npm run build
 
 # Expose the port the app runs on
 EXPOSE 3001
 
+# Create a startup script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Define the command to run the app
-CMD ["npm", "start"]
+CMD ["/start.sh"]

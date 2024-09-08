@@ -6,8 +6,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
-      - JWT_SECRET=${JWT_SECRET}
+    env_file:
+      - .env.local
     volumes:
       - ./secure_clipboard.sqlite:/app/secure_clipboard.sqlite
     restart: unless-stopped

@@ -52,6 +52,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"  # For 
 node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # For JWT_SECRET
 ```
 
+Edit the `.env.local` file and set these values.
+
 ### Standard Installation (Non-Docker)
 
 1. Clone the repository:
@@ -86,16 +88,18 @@ node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # F
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/shooter-git/vaulty.git
+   git clone https://github.com/yourusername/vaulty.git
    cd vaulty
    ```
 
-2. Build and start the Docker container:
+2. Create and configure the `.env.local` file as described in the Environment Variables section.
+
+3. Build and start the Docker container:
    ```bash
    docker-compose up -d
    ```
 
-3. Open your browser and navigate to `http://localhost:3001`
+4. Open your browser and navigate to `http://localhost:3001`
 
 ### Docker Run Installation
 
@@ -105,22 +109,23 @@ node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # F
    cd vaulty
    ```
 
-2. Build the Docker image:
+2. Create and configure the `.env.local` file as described in the Environment Variables section.
+
+3. Build the Docker image:
    ```bash
    docker build -t vaulty .
    ```
 
-3. Run the Docker container:
+4. Run the Docker container:
    ```bash
    docker run -d -p 3001:3001 \
-     -e ENCRYPTION_KEY=your_encryption_key \
-     -e JWT_SECRET=your_jwt_secret \
+     --env-file .env.local \
      -v $(pwd)/secure_clipboard.sqlite:/app/secure_clipboard.sqlite \
      --name vaulty \
      vaulty
    ```
 
-4. Open your browser and navigate to `http://localhost:3001`
+5. Open your browser and navigate to `http://localhos1:3001`
 
 ## 💻 Usage
 

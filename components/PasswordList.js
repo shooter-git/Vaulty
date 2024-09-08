@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import PasswordEntry from './PasswordEntry'
 import AddPasswordModal from './AddPasswordModal'
-import ActionBar from './Actionbar'
+import ActionBar from './ActionBar'  // Corrected import statement
 import { useAuth } from '../lib/auth'
 
 export default function PasswordList() {
