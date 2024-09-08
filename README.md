@@ -56,7 +56,7 @@ node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # F
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/vaulty.git
+   git clone https://github.com/shooter-git/vaulty.git
    cd vaulty
    ```
 
@@ -80,13 +80,13 @@ node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # F
    npm start
    ```
 
-6. Open your browser and navigate to `http://localhost:3000`
+6. Open your browser and navigate to `http://localhost:3001`
 
 ### Docker Compose Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/vaulty.git
+   git clone https://github.com/shooter-git/vaulty.git
    cd vaulty
    ```
 
@@ -95,13 +95,13 @@ node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # F
    docker-compose up -d
    ```
 
-3. Open your browser and navigate to `http://localhost:3000`
+3. Open your browser and navigate to `http://localhost:3001`
 
 ### Docker Run Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/vaulty.git
+   git clone https://github.com/shooter-git/vaulty.git
    cd vaulty
    ```
 
@@ -112,7 +112,7 @@ node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # F
 
 3. Run the Docker container:
    ```bash
-   docker run -d -p 3000:3000 \
+   docker run -d -p 3001:3001 \
      -e ENCRYPTION_KEY=your_encryption_key \
      -e JWT_SECRET=your_jwt_secret \
      -v $(pwd)/secure_clipboard.sqlite:/app/secure_clipboard.sqlite \
@@ -120,7 +120,7 @@ node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # F
      vaulty
    ```
 
-4. Open your browser and navigate to `http://localhost:3000`
+4. Open your browser and navigate to `http://localhost:3001`
 
 ## 💻 Usage
 
@@ -173,7 +173,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-Made with ❤️ by shooter
+made with ❤️ by shooter
 
 [GitHub](https://github.com/shooter-git)
 </div>
