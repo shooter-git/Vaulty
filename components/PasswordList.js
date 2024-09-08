@@ -196,7 +196,7 @@ export default function PasswordList() {
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col bg-transparent">
       <ActionBar 
         onSearch={handleSearch}
         sortOrder={sortOrder}

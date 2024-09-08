@@ -34,17 +34,12 @@ html, body, #__next {
 body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  overflow: hidden;
+  @apply bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text;
 }
 
 #__next {
   display: flex;
   flex-direction: column;
-}
-
-main {
-  flex-grow: 1;
-  overflow: auto;
 }
 
 /* Landscape mode adjustments */
@@ -54,12 +49,12 @@ main {
     overflow: hidden;
   }
 
-  main {
+  body {
     display: flex;
     flex-direction: column;
   }
 
-  .landscape-fill {
+  #__next {
     flex: 1;
     overflow: auto;
   }
@@ -72,31 +67,19 @@ main {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-color-dark);
+  @apply bg-kali-primary dark:bg-synthwave-primary;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--button-primary-dark);
+  @apply bg-kali-accent dark:bg-synthwave-accent;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--button-primary-hover-dark);
+  @apply bg-kali-accent/80 dark:bg-synthwave-accent/80;
 }
 
-.dark ::-webkit-scrollbar-track {
-  background: var(--background-color-synth);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: var(--button-primary-synth);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: var(--button-primary-hover-synth);
-}
-
-/* Utility classes for flex layout */
+/* Utility classes */
 .flex-col {
   display: flex;
   flex-direction: column;
@@ -110,4 +93,31 @@ main {
   overflow: auto;
 }
 
-/* Add any other custom styles here */
+/* Transition for smooth theme switching */
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Focus styles for accessibility */
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus\:ring-2:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus\:ring-kali-accent:focus {
+  --tw-ring-color: var(--button-primary-dark);
+}
+
+.dark .focus\:ring-synthwave-accent:focus {
+  --tw-ring-color: var(--button-primary-synth);
+}
+
+/* Custom styles for specific components can be added here */

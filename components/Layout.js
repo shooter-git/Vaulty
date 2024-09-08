@@ -1,12 +1,18 @@
 import Head from 'next/head'
 import { useTheme } from '../lib/themeContext'
 import Navbar from './NavBar'
+import { useEffect } from 'react'
 
 export default function Layout({ children }) {
   const { themeName } = useTheme()
 
+  useEffect(() => {
+    // Apply the theme class to the root element
+    document.documentElement.className = themeName === 'synthwave' ? 'dark' : '';
+  }, [themeName]);
+
   return (
-    <div className={`min-h-screen flex flex-col ${themeName === 'synthwave' ? 'dark' : ''}`}>
+    <div className={`min-h-screen flex flex-col bg-kali-primary dark:bg-synthwave-primary`}>
       <Head>
         <title>Vaulty</title>
         <meta name="description" content="A secure password manager PWA" />
@@ -21,7 +27,7 @@ export default function Layout({ children }) {
 
       <Navbar />
 
-      <main className="flex-grow w-full bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text overflow-auto">
+      <main className="flex-grow w-full text-kali-text dark:text-synthwave-text overflow-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 h-full">
           {children}
         </div>
