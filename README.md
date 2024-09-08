@@ -98,6 +98,7 @@ A secure, lightweight Progressive Web App for managing and retrieving passwords 
 - JWT is used for session management
 - Passwords are never stored in plain text
 - End-to-end encryption is implemented for all sensitive data
+- Biometric access is available on supported devices (e.g., Face ID on iOS)
 
 ## 🛠️ Development
 
@@ -120,7 +121,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-made with ❤️ by shooter
+Made with ❤️ by shooter
 
 [GitHub](https://github.com/shooter-git)
 </div>
