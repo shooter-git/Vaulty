@@ -5,27 +5,50 @@ const path = require('path');
 async function initDb() {
   try {
     const db = await open({
-      filename: path.join(process.cwd(), 'secure_clipboard.sqlite'),
+      filename: path.join(__dirname, '..', 'secure_clipboard.sqlite'),
       driver: sqlite3.Database
     });
 
-    await db.exec(`
+    // Enable foreign keys
+    await db.run('PRAGMA foreign_keys = ON');
+
+    // Create users table
+    await db.run(`
       CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      );
+      )
+    `);
 
-      CREATE TABLE IF NOT EXISTS passwords (
+    // Drop existing passwords table if it exists
+    await db.run(`DROP TABLE IF EXISTS passwords`);
+
+    // Create passwords table with correct structure
+    await db.run(`
+      CREATE TABLE passwords (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
-        description TEXT NOT NULL,
-        encrypted_password TEXT NOT NULL,
+        encrypted_description TEXT NOT NULL,
+        description_iv TEXT NOT NULL,
+        description_auth_tag TEXT NOT NULL,
+        encrypted_password_data TEXT NOT NULL,
+        password_iv TEXT NOT NULL,
+        password_auth_tag TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
-      );
+      )
+    `);
+
+    // Create refresh_tokens table
+    await db.run(`
+      CREATE TABLE IF NOT EXISTS refresh_tokens (
+        user_id INTEGER PRIMARY KEY,
+        token TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
     `);
 
     console.log('Database initialized successfully');

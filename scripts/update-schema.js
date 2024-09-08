@@ -5,7 +5,7 @@ const path = require('path');
 async function updateSchema() {
   try {
     const db = await open({
-      filename: path.join(process.cwd(), 'secure_clipboard.sqlite'),
+      filename: path.join(__dirname, '..', 'secure_clipboard.sqlite'),
       driver: sqlite3.Database
     });
 
