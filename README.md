@@ -1,8 +1,8 @@
-# 🔐 vaulty - Secure Password Manager PWA
+# 🔐 Vaulty - Secure Password Manager PWA
 
 <div align="center">
 
-![Secure Password Manager PWA Logo](https://via.placeholder.com/150)
+![Vaulty Logo](https://via.placeholder.com/150)
 
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
@@ -17,7 +17,7 @@ A secure, lightweight Progressive Web App for managing and retrieving passwords 
 
 ## 🌟 Features
 
-- 🔒 **Secure Password Storage**: Store your passwords safely with strong encryption
+- 🔒 **Secure Password Storage**: Store your passwords safely with AES-256-GCM encryption
 - 📋 **One-Click Copy**: Retrieve passwords directly to your clipboard
 - 🔢 **User Authentication**: Secure app access with username and password
 - 🎲 **Password Generator**: Create strong, unique passwords with our built-in generator
@@ -45,22 +45,18 @@ A secure, lightweight Progressive Web App for managing and retrieving passwords 
    ```
    Edit `.env.local` with your specific configuration:
    ```bash
-   NEXT_PUBLIC_ENCRYPTION_KEY=your_32_byte_encryption_key
-   JWT_SECRET=your_jwt_secret
+   NEXT_PUBLIC_ENCRYPTION_KEY=your_64_character_hex_key_here
+   JWT_SECRET=your_jwt_secret_here
    ```
-   Make sure to replace the placeholders with secure, random values:
-   - `NEXT_PUBLIC_ENCRYPTION_KEY`: Generate a 32-byte (256-bit) random key
-   - `JWT_SECRET`: Generate a strong, random string for JWT signing
-
-   You can use the following commands to generate these values:
+   Generate these values using:
    ```bash
-   openssl rand -base64 32  # For NEXT_PUBLIC_ENCRYPTION_KEY
-   openssl rand -base64 64  # For JWT_SECRET
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"  # For NEXT_PUBLIC_ENCRYPTION_KEY
+   node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # For JWT_SECRET
    ```
 
 4. Initialize the database:
    ```bash
-   npm run db:init
+   node update-schema.js
    ```
 
 5. Build the application:
@@ -83,7 +79,7 @@ A secure, lightweight Progressive Web App for managing and retrieving passwords 
 
 1. **Sign Up/Login**: Create a new account or log in to an existing one.
 
-2. **Add a New Password**: Click the "+" button to add a new password entry.
+2. **Add a New Password**: Click the "Add Password" button to add a new password entry.
 
 3. **Generate a Password**: Use the built-in generator for strong, unique passwords.
 
@@ -95,12 +91,13 @@ A secure, lightweight Progressive Web App for managing and retrieving passwords 
 
 ## 🔒 Security
 
-- All passwords are encrypted using AES-256 before storage in the SQLite database
+- All passwords are encrypted using AES-256-GCM before storage in the SQLite database
 - The database file is stored locally and not synced to any cloud service by default
 - HTTPS is used for all data transmissions when deployed
 - Clipboard contents are automatically cleared after 10 seconds
 - JWT is used for session management
 - Passwords are never stored in plain text
+- End-to-end encryption is implemented for all sensitive data
 
 ## 🛠️ Development
 
