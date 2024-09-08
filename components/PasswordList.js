@@ -196,7 +196,7 @@ export default function PasswordList() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-transparent">
+    <div className="h-full flex flex-col landscape:h-[calc(100vh-4rem)]">
       <ActionBar 
         onSearch={handleSearch}
         sortOrder={sortOrder}
@@ -213,7 +213,7 @@ export default function PasswordList() {
           No passwords found. Add a new password or try a different search term.
         </p>
       ) : (
-        <div className="flex-grow overflow-auto">
+        <div className="flex-grow overflow-auto landscape:h-[calc(100vh-8rem)]">
           <div className="space-y-2">
             {sortedPasswords.map((password) => (
               <PasswordEntry 
