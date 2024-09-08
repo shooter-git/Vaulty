@@ -8,19 +8,17 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm ci
+# Use npm install instead of npm ci to avoid deprecation warnings
+RUN npm install --production
 
 # Copy the rest of the application code
 COPY . .
 
-# Copy the .env.local file
-COPY .env.local .env.local
-
 # Build the Next.js app
 RUN npm run build
 
-# Expose the port the app runs on
-EXPOSE 3001
+# Expose the new port the app runs on
+EXPOSE 3010
 
 # Create a startup script
 COPY start.sh /start.sh

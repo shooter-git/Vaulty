@@ -39,20 +39,27 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
 
 ### Environment Variables
 
-Copy the `.env.example` file to `.env.local` and fill in the required values:
+Before running the application, you need to set up your environment variables:
 
-```bash
-cp .env.example .env.local
-```
+1. Copy the `.env.example` file to `.env.local`:
+   ```bash
+   cp .env.example .env.local
+   ```
 
-Generate secure values for `ENCRYPTION_KEY` and `JWT_SECRET`:
+2. Open `.env.local` in a text editor and update the values:
 
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"  # For ENCRYPTION_KEY
-node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"  # For JWT_SECRET
-```
+   - Generate a secure `ENCRYPTION_KEY` (64-character hex string):
+     ```bash
+     node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+     ```
+   - Generate a secure `JWT_SECRET`:
+     ```bash
+     node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"
+     ```
 
-Edit the `.env.local` file and set these values.
+3. Set these values in your `.env.local` file.
+
+Note: If you skip this step when using Docker, the application will use the example environment variables, which is not recommended for production use.
 
 ### Standard Installation (Non-Docker)
 
@@ -82,24 +89,24 @@ Edit the `.env.local` file and set these values.
    npm start
    ```
 
-6. Open your browser and navigate to `http://localhost:3001`
+6. Open your browser and navigate to `http://localhost:3010`
 
 ### Docker Compose Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/vaulty.git
+   git clone https://github.com/shooter-git/vaulty.git
    cd vaulty
    ```
 
-2. Create and configure the `.env.local` file as described in the Environment Variables section.
+2. Set up the `.env.local` file as described in the Environment Variables section.
 
 3. Build and start the Docker container:
    ```bash
    docker-compose up -d
    ```
 
-4. Open your browser and navigate to `http://localhost:3001`
+4. Open your browser and navigate to `http://localhost:3010`
 
 ### Docker Run Installation
 
@@ -118,14 +125,14 @@ Edit the `.env.local` file and set these values.
 
 4. Run the Docker container:
    ```bash
-   docker run -d -p 3001:3001 \
+   docker run -d -p 3010:3010 \
      --env-file .env.local \
      -v $(pwd)/secure_clipboard.sqlite:/app/secure_clipboard.sqlite \
      --name vaulty \
      vaulty
    ```
 
-5. Open your browser and navigate to `http://localhos1:3001`
+5. Open your browser and navigate to `http://localhos1:3010`
 
 ## 💻 Usage
 

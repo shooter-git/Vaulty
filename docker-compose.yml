@@ -2,12 +2,13 @@ services:
   app:
     build: .
     ports:
-      - "3001:3001"
+      - "3010:3010"
     environment:
       - NODE_ENV=production
-      - PORT=3001
+      - PORT=3010
     env_file:
       - .env.local
     volumes:
       - ./secure_clipboard.sqlite:/app/secure_clipboard.sqlite
+      - ./.env.local:/app/.env.local
     restart: unless-stopped
