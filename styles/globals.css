@@ -1,7 +1,6 @@
-/* eslint-disable */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 :root {
   /* Dark mode colors */
@@ -26,10 +25,89 @@
   --highlight-color-synth: #ff9ff3;
 }
 
-/* Custom styles that can't be easily achieved with Tailwind */
+html, body, #__next {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  overflow: hidden;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+/* Landscape mode adjustments */
+@media (orientation: landscape) {
+  html, body, #__next {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .landscape-fill {
+    flex: 1;
+    overflow: auto;
+  }
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--button-primary-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--button-primary-hover-dark);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: var(--background-color-synth);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--button-primary-synth);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--button-primary-hover-synth);
+}
+
+/* Utility classes for flex layout */
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.overflow-auto {
+  overflow: auto;
 }
 
 /* Add any other custom styles here */

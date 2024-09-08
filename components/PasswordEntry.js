@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { encryptWithPublicKey, decryptWithPrivateKey } from '../lib/clientEncryption'
 import { generatePassword } from '../lib/passwordGenerator'
 
 export default function PasswordEntry({ password, onEdit, onDelete }) {
@@ -12,26 +11,10 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
 
   const copyToClipboard = async () => {
     try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(password.password)
-      } else {
-        const textArea = document.createElement("textarea")
-        textArea.value = password.password
-        document.body.appendChild(textArea)
-        textArea.focus()
-        textArea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textArea)
-      }
-
+      await navigator.clipboard.writeText(password.password)
       setIsCopied(true)
       setTimeout(() => setIsCopied(false), 2000)
-      
-      setTimeout(() => {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText('')
-        }
-      }, 10000)
+      setTimeout(() => navigator.clipboard.writeText(''), 10000)
     } catch (err) {
       console.error('Failed to copy password:', err)
       setError('Failed to copy password. Please try again.')
@@ -66,26 +49,7 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
 
   const handleSave = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const publicKeyResponse = await fetch('/api/public-key', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      if (!publicKeyResponse.ok) {
-        throw new Error('Failed to fetch public key')
-      }
-      const { publicKey } = await publicKeyResponse.json();
-
-      const encryptedDescription = await encryptWithPublicKey(editedDescription, publicKey)
-      const encryptedPassword = await encryptWithPublicKey(editedPassword, publicKey)
-
-      const updatedPassword = {
-        id: password.id,
-        description: encryptedDescription,
-        password: encryptedPassword
-      }
-      await onEdit(password.id, updatedPassword)
+      await onEdit(password.id, { description: editedDescription, password: editedPassword })
       setIsEditing(false)
       setError(null)
     } catch (err) {
@@ -110,8 +74,8 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
   const secondaryButtonClass = `${buttonClass} bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text`
 
   return (
-    <div className="bg-kali-secondary dark:bg-synthwave-secondary rounded-lg overflow-hidden shadow-sm">
-      <div className="flex justify-between items-center p-2">
+    <div className="bg-kali-secondary dark:bg-synthwave-secondary rounded-lg overflow-hidden shadow-sm landscape:flex landscape:items-center">
+      <div className="flex justify-between items-center p-2 landscape:flex-grow">
         <span className="text-xs sm:text-sm text-kali-text dark:text-synthwave-text truncate mr-2 flex-grow">
           {password.description}
         </span>
@@ -133,7 +97,7 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
         </div>
       </div>
       {isExpanded && (
-        <div className="p-2 bg-kali-primary dark:bg-synthwave-primary">
+        <div className="p-2 bg-kali-primary dark:bg-synthwave-primary landscape:ml-2 landscape:flex-grow">
           {error && (
             <p className="text-red-500 text-xs mb-2">{error}</p>
           )}

@@ -12,10 +12,22 @@ async function updateSchema() {
     // Start a transaction
     await db.run('BEGIN TRANSACTION');
 
-    // Drop the existing passwords table
+    // Drop existing tables
     await db.run('DROP TABLE IF EXISTS passwords');
+    await db.run('DROP TABLE IF EXISTS refresh_tokens');
+    await db.run('DROP TABLE IF EXISTS users');
 
-    // Create the passwords table with the correct schema for AES-256-GCM
+    // Create users table
+    await db.run(`
+      CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Create passwords table
     await db.run(`
       CREATE TABLE passwords (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,10 +44,27 @@ async function updateSchema() {
       )
     `);
 
+    // Create refresh_tokens table
+    await db.run(`
+      CREATE TABLE refresh_tokens (
+        user_id INTEGER PRIMARY KEY,
+        token TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    `);
+
     // Commit the transaction
     await db.run('COMMIT');
 
     console.log('Database schema updated successfully');
+
+    // Log the schema
+    const tables = await db.all("SELECT name FROM sqlite_master WHERE type='table'");
+    for (const table of tables) {
+      const columns = await db.all(`PRAGMA table_info(${table.name})`);
+      console.log(`Table: ${table.name}`);
+      console.log('Columns:', columns);
+    }
 
     await db.close();
   } catch (error) {

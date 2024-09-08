@@ -61,7 +61,12 @@ export default async function handler(req, res) {
 }
 
 async function getPasswords(userId) {
-  const sql = 'SELECT id, encrypted_description, description_iv, description_auth_tag, encrypted_password_data, password_iv, password_auth_tag FROM passwords WHERE user_id = ?';
+  const sql = `
+    SELECT id, encrypted_description, description_iv, description_auth_tag, 
+           encrypted_password_data, password_iv, password_auth_tag 
+    FROM passwords 
+    WHERE user_id = ?
+  `;
   const passwords = await getQuery(sql, [userId]);
   return passwords.map(pw => ({
     id: pw.id,
@@ -88,8 +93,12 @@ async function addPassword(userId, encryptedDescription, encryptedPassword) {
   `;
   const result = await runQuery(sql, [
     userId,
-    encryptedDescription.encryptedData, encryptedDescription.iv, encryptedDescription.authTag,
-    encryptedPassword.encryptedData, encryptedPassword.iv, encryptedPassword.authTag
+    encryptedDescription.encryptedData,
+    encryptedDescription.iv,
+    encryptedDescription.authTag,
+    encryptedPassword.encryptedData,
+    encryptedPassword.iv,
+    encryptedPassword.authTag
   ]);
   return result.lastID;
 }
@@ -98,13 +107,19 @@ async function updatePassword(id, userId, encryptedDescription, encryptedPasswor
   const sql = `
     UPDATE passwords SET 
       encrypted_description = ?, description_iv = ?, description_auth_tag = ?,
-      encrypted_password_data = ?, password_iv = ?, password_auth_tag = ?
+      encrypted_password_data = ?, password_iv = ?, password_auth_tag = ?,
+      updated_at = CURRENT_TIMESTAMP
     WHERE id = ? AND user_id = ?
   `;
   await runQuery(sql, [
-    encryptedDescription.encryptedData, encryptedDescription.iv, encryptedDescription.authTag,
-    encryptedPassword.encryptedData, encryptedPassword.iv, encryptedPassword.authTag,
-    id, userId
+    encryptedDescription.encryptedData,
+    encryptedDescription.iv,
+    encryptedDescription.authTag,
+    encryptedPassword.encryptedData,
+    encryptedPassword.iv,
+    encryptedPassword.authTag,
+    id,
+    userId
   ]);
 }
 

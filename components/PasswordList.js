@@ -196,7 +196,7 @@ export default function PasswordList() {
   }
 
   return (
-    <div className="max-w-md mx-auto px-2 sm:px-0">
+    <div className="h-full flex flex-col">
       <ActionBar 
         onSearch={handleSearch}
         sortOrder={sortOrder}
@@ -213,15 +213,17 @@ export default function PasswordList() {
           No passwords found. Add a new password or try a different search term.
         </p>
       ) : (
-        <div className="space-y-2">
-          {sortedPasswords.map((password) => (
-            <PasswordEntry 
-              key={password.id} 
-              password={password} 
-              onEdit={handleEditPassword}
-              onDelete={handleDeletePassword}
-            />
-          ))}
+        <div className="flex-grow overflow-auto">
+          <div className="space-y-2">
+            {sortedPasswords.map((password) => (
+              <PasswordEntry 
+                key={password.id} 
+                password={password} 
+                onEdit={handleEditPassword}
+                onDelete={handleDeletePassword}
+              />
+            ))}
+          </div>
         </div>
       )}
       <AddPasswordModal

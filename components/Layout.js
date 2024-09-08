@@ -21,8 +21,10 @@ export default function Layout({ children }) {
 
       <Navbar />
 
-      <main className="flex-grow container mx-auto px-2 sm:px-4 md:px-6 py-4 bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text">
-        {children}
+      <main className="flex-grow w-full bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text overflow-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 h-full">
+          {children}
+        </div>
       </main>
     </div>
   )
