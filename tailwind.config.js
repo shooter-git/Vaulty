@@ -19,6 +19,9 @@ module.exports = {
           accent: '#ff9ff3',
         },
       },
+      fontSize: {
+        '2xs': '0.625rem', // 10px
+      },
     },
   },
   variants: {

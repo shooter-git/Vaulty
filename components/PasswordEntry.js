@@ -17,7 +17,6 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(decryptedPassword)
       } else {
-        // Fallback for browsers that don't support the Clipboard API
         const textArea = document.createElement("textarea")
         textArea.value = decryptedPassword
         document.body.appendChild(textArea)
@@ -30,7 +29,6 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
       setIsCopied(true)
       setTimeout(() => setIsCopied(false), 2000)
       
-      // Set a timeout to clear the clipboard after 10 seconds
       setTimeout(() => {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText('')
@@ -43,7 +41,7 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
   }
 
   const handleCopyClick = (e) => {
-    e.preventDefault() // Prevent default touch behavior
+    e.preventDefault()
     copyToClipboard()
   }
 
@@ -56,8 +54,8 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
   const toggleExpand = () => {
     setIsExpanded(!isExpanded)
     if (!isExpanded) {
-      setIsEditing(false) // Reset editing state when collapsing
-      setError(null) // Clear any existing errors
+      setIsEditing(false)
+      setError(null)
     }
   }
 
@@ -93,7 +91,7 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
 
   const handleGeneratePassword = () => {
     try {
-      const newPassword = generatePassword() // You can add parameters here if needed
+      const newPassword = generatePassword()
       setEditedPassword(newPassword)
       setError(null)
     } catch (err) {
@@ -102,34 +100,37 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
     }
   }
 
-  const buttonClass = "px-3 py-2 text-sm rounded-md hover:opacity-80 transition-opacity"
+  const buttonClass = "px-2 py-1 text-xs rounded-md hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-kali-accent dark:focus:ring-synthwave-accent"
   const primaryButtonClass = `${buttonClass} bg-kali-accent dark:bg-synthwave-accent text-black dark:text-black`
   const secondaryButtonClass = `${buttonClass} bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text`
 
   return (
-    <div className="bg-kali-secondary dark:bg-synthwave-secondary rounded-md overflow-hidden">
-      <div className="flex justify-between items-center p-3">
-        <span className="text-sm text-kali-text dark:text-synthwave-text">{password.description}</span>
-        <div className="flex space-x-2">
+    <div className="bg-kali-secondary dark:bg-synthwave-secondary rounded-lg overflow-hidden shadow-sm">
+      <div className="flex justify-between items-center p-2">
+        <span className="text-xs sm:text-sm text-kali-text dark:text-synthwave-text truncate mr-2 flex-grow">
+          {password.description}
+        </span>
+        <div className="flex space-x-1 flex-shrink-0">
           <button
             onClick={handleCopyClick}
             onTouchStart={handleCopyClick}
             className={primaryButtonClass}
           >
-            {isCopied ? 'Copied!' : 'Copy'}
+            {isCopied ? 'Copied' : 'Copy'}
           </button>
           <button
             onClick={toggleExpand}
             className={secondaryButtonClass}
+            aria-expanded={isExpanded}
           >
             {isExpanded ? '▲' : '▼'}
           </button>
         </div>
       </div>
       {isExpanded && (
-        <div className="p-3 bg-kali-primary dark:bg-synthwave-primary">
+        <div className="p-2 bg-kali-primary dark:bg-synthwave-primary">
           {error && (
-            <p className="text-red-500 text-sm mb-2">{error}</p>
+            <p className="text-red-500 text-xs mb-2">{error}</p>
           )}
           {isEditing ? (
             <div className="space-y-2">
@@ -137,25 +138,25 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
                 type="text"
                 value={editedDescription}
                 onChange={(e) => setEditedDescription(e.target.value)}
-                className="w-full px-3 py-2 bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text rounded-md"
+                className="w-full px-2 py-1 text-xs bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text rounded-md focus:outline-none focus:ring-2 focus:ring-kali-accent dark:focus:ring-synthwave-accent"
                 placeholder="Description"
               />
-              <div className="flex space-x-2">
+              <div className="flex space-x-1">
                 <input
                   type="password"
                   value={editedPassword}
                   onChange={(e) => setEditedPassword(e.target.value)}
-                  className="flex-grow px-3 py-2 bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text rounded-md"
+                  className="flex-grow px-2 py-1 text-xs bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text rounded-md focus:outline-none focus:ring-2 focus:ring-kali-accent dark:focus:ring-synthwave-accent"
                   placeholder="New Password"
                 />
                 <button
                   onClick={handleGeneratePassword}
-                  className={primaryButtonClass}
+                  className={`${primaryButtonClass} text-xs`}
                 >
                   Generate
                 </button>
               </div>
-              <div className="flex justify-end space-x-2">
+              <div className="flex justify-end space-x-1">
                 <button
                   onClick={() => {
                     setIsEditing(false)
@@ -174,7 +175,7 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
               </div>
             </div>
           ) : (
-            <div className="flex justify-end space-x-2">
+            <div className="flex justify-end space-x-1">
               <button
                 onClick={handleEdit}
                 className={primaryButtonClass}

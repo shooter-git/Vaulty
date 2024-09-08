@@ -136,11 +136,11 @@ export default function PasswordList() {
   });
 
   if (isLoading) {
-    return <div className="text-center text-kali-text dark:text-synthwave-text">Loading passwords...</div>
+    return <div className="text-center text-kali-text dark:text-synthwave-text p-4">Loading passwords...</div>
   }
 
   return (
-    <div>
+    <div className="max-w-md mx-auto px-2 sm:px-0">
       <ActionBar 
         onSearch={handleSearch}
         sortOrder={sortOrder}
@@ -153,11 +153,11 @@ export default function PasswordList() {
         </p>
       )}
       {sortedPasswords.length === 0 ? (
-        <p className="text-kali-text dark:text-synthwave-text text-center p-3 bg-kali-secondary dark:bg-synthwave-secondary rounded text-sm">
+        <p className="text-kali-text dark:text-synthwave-text text-center p-3 bg-kali-secondary dark:bg-synthwave-secondary rounded-lg text-sm">
           No passwords found. Add a new password or try a different search term.
         </p>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2">
           {sortedPasswords.map((password) => (
             <PasswordEntry 
               key={password.id} 

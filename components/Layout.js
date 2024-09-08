@@ -12,11 +12,16 @@ export default function Layout({ children }) {
         <meta name="description" content="A secure password manager PWA" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+        <meta name="theme-color" content="#00FF00" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
       </Head>
 
       <Navbar />
 
-      <main className="flex-grow container mx-auto p-4 bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text">
+      <main className="flex-grow container mx-auto px-2 sm:px-4 md:px-6 py-4 bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text">
         {children}
       </main>
     </div>
