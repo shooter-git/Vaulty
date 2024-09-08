@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import PasswordEntry from './PasswordEntry'
 import AddPasswordModal from './AddPasswordModal'
 import ActionBar from './Actionbar'
+import { useAuth } from '../lib/auth'
 
 export default function PasswordList() {
   const [passwords, setPasswords] = useState([])
@@ -10,6 +11,8 @@ export default function PasswordList() {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [sortOrder, setSortOrder] = useState('asc')
+
+  const { refreshToken, logout } = useAuth()
 
   useEffect(() => {
     fetchPasswords()
@@ -29,6 +32,17 @@ export default function PasswordList() {
           'Authorization': `Bearer ${token}`
         }
       });
+      
+      if (response.status === 401) {
+        const newToken = await refreshToken()
+        if (newToken) {
+          localStorage.setItem('token', newToken)
+          return fetchPasswords() // Retry with new token
+        } else {
+          throw new Error('Authentication failed')
+        }
+      }
+
       if (response.ok) {
         const data = await response.json();
         setPasswords(data);
@@ -38,6 +52,9 @@ export default function PasswordList() {
     } catch (error) {
       console.error('Error fetching passwords:', error);
       setError('Failed to fetch passwords. Please try again.');
+      if (error.message === 'Authentication failed') {
+        logout();
+      }
     } finally {
       setIsLoading(false)
     }
@@ -56,6 +73,16 @@ export default function PasswordList() {
         body: JSON.stringify(newPassword)
       });
 
+      if (response.status === 401) {
+        const newToken = await refreshToken()
+        if (newToken) {
+          localStorage.setItem('token', newToken)
+          return handleAddPassword(newPassword) // Retry with new token
+        } else {
+          throw new Error('Authentication failed')
+        }
+      }
+
       if (response.ok) {
         const addedPassword = await response.json();
         setPasswords(prevPasswords => [...prevPasswords, addedPassword]);
@@ -66,6 +93,9 @@ export default function PasswordList() {
     } catch (error) {
       console.error('Error adding password:', error);
       setError('Failed to add password. Please try again.');
+      if (error.message === 'Authentication failed') {
+        logout();
+      }
     }
   }
 
@@ -82,6 +112,16 @@ export default function PasswordList() {
         body: JSON.stringify({ id, ...updatedPassword })
       });
 
+      if (response.status === 401) {
+        const newToken = await refreshToken()
+        if (newToken) {
+          localStorage.setItem('token', newToken)
+          return handleEditPassword(id, updatedPassword) // Retry with new token
+        } else {
+          throw new Error('Authentication failed')
+        }
+      }
+
       if (response.ok) {
         setPasswords(prevPasswords => 
           prevPasswords.map(p => p.id === id ? { ...p, ...updatedPassword } : p)
@@ -92,6 +132,9 @@ export default function PasswordList() {
     } catch (error) {
       console.error('Error updating password:', error);
       setError('Failed to update password. Please try again.');
+      if (error.message === 'Authentication failed') {
+        logout();
+      }
     }
   }
 
@@ -108,6 +151,16 @@ export default function PasswordList() {
         body: JSON.stringify({ id })
       });
 
+      if (response.status === 401) {
+        const newToken = await refreshToken()
+        if (newToken) {
+          localStorage.setItem('token', newToken)
+          return handleDeletePassword(id) // Retry with new token
+        } else {
+          throw new Error('Authentication failed')
+        }
+      }
+
       if (response.ok) {
         setPasswords(prevPasswords => prevPasswords.filter(p => p.id !== id));
       } else {
@@ -116,6 +169,9 @@ export default function PasswordList() {
     } catch (error) {
       console.error('Error deleting password:', error);
       setError('Failed to delete password. Please try again.');
+      if (error.message === 'Authentication failed') {
+        logout();
+      }
     }
   }
 

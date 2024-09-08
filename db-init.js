@@ -30,10 +30,21 @@ async function initDb() {
       CREATE TABLE passwords (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
-        description TEXT NOT NULL,
-        encrypted_password TEXT NOT NULL,
+        encrypted_description TEXT NOT NULL,
+        description_iv TEXT NOT NULL,
+        encrypted_password_data TEXT NOT NULL,
+        password_iv TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )
+    `);
+
+    // Create refresh_tokens table
+    await db.run(`
+      CREATE TABLE IF NOT EXISTS refresh_tokens (
+        user_id INTEGER PRIMARY KEY,
+        token TEXT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(id)
       )
     `);

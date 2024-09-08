@@ -1,4 +1,4 @@
-import { verifyUser, generateToken, createUser } from '../../lib/auth-server';
+import { verifyUser, createUser, generateTokens, storeRefreshToken } from '../../lib/auth-server';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -20,9 +20,14 @@ export default async function handler(req, res) {
       
       const user = await verifyUser(username, password);
       if (user) {
-        const token = generateToken(user.id);
-        console.log('Login successful, token generated for user:', user.id);
-        res.status(200).json({ token, username: user.username });
+        const { accessToken, refreshToken } = generateTokens(user.id);
+        await storeRefreshToken(user.id, refreshToken);
+        console.log('Login successful, tokens generated for user:', user.id);
+        
+        // Set the refresh token as an HTTP-only cookie
+        res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=604800; SameSite=Strict`);
+        
+        res.status(200).json({ accessToken, username: user.username });
       } else {
         console.log('Login failed: Invalid credentials for username:', username);
         res.status(401).json({ message: 'Invalid credentials' });
@@ -34,9 +39,14 @@ export default async function handler(req, res) {
         const userId = await createUser(username, password);
         console.log('User created with ID:', userId);
         
-        const token = generateToken(userId);
-        console.log('Token generated successfully for new user:', userId);
-        res.status(201).json({ token, username });
+        const { accessToken, refreshToken } = generateTokens(userId);
+        await storeRefreshToken(userId, refreshToken);
+        console.log('Tokens generated successfully for new user:', userId);
+        
+        // Set the refresh token as an HTTP-only cookie
+        res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=604800; SameSite=Strict`);
+        
+        res.status(201).json({ accessToken, username });
       } catch (error) {
         console.error('Error in signup process:', error);
         if (error.message === 'Username already exists') {

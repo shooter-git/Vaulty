@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { decryptPassword, encryptPassword } from '../lib/encryption'
+import { encryptWithPublicKey, decryptWithPrivateKey } from '../lib/clientEncryption'
 import { generatePassword } from '../lib/passwordGenerator'
 
 export default function PasswordEntry({ password, onEdit, onDelete }) {
@@ -7,18 +7,16 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [editedDescription, setEditedDescription] = useState(password.description)
-  const [editedPassword, setEditedPassword] = useState('')
+  const [editedPassword, setEditedPassword] = useState(password.password)
   const [error, setError] = useState(null)
 
   const copyToClipboard = async () => {
     try {
-      const decryptedPassword = decryptPassword(password.encrypted_password)
-      
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(decryptedPassword)
+        await navigator.clipboard.writeText(password.password)
       } else {
         const textArea = document.createElement("textarea")
-        textArea.value = decryptedPassword
+        textArea.value = password.password
         document.body.appendChild(textArea)
         textArea.focus()
         textArea.select()
@@ -60,27 +58,34 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
   }
 
   const handleEdit = () => {
-    try {
-      setIsEditing(true)
-      setEditedDescription(password.description)
-      const decrypted = decryptPassword(password.encrypted_password)
-      setEditedPassword(decrypted)
-      setError(null)
-    } catch (err) {
-      console.error('Failed to decrypt password:', err)
-      setError('Failed to edit password. Please try again.')
-      setIsEditing(false)
-    }
+    setIsEditing(true)
+    setEditedDescription(password.description)
+    setEditedPassword(password.password)
+    setError(null)
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
+      const token = localStorage.getItem('token')
+      const publicKeyResponse = await fetch('/api/public-key', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!publicKeyResponse.ok) {
+        throw new Error('Failed to fetch public key')
+      }
+      const { publicKey } = await publicKeyResponse.json();
+
+      const encryptedDescription = await encryptWithPublicKey(editedDescription, publicKey)
+      const encryptedPassword = await encryptWithPublicKey(editedPassword, publicKey)
+
       const updatedPassword = {
         id: password.id,
-        description: editedDescription,
-        encrypted_password: encryptPassword(editedPassword)
+        description: encryptedDescription,
+        password: encryptedPassword
       }
-      onEdit(password.id, updatedPassword)
+      await onEdit(password.id, updatedPassword)
       setIsEditing(false)
       setError(null)
     } catch (err) {

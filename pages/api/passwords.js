@@ -1,6 +1,6 @@
 import { verifyToken } from '../../lib/auth-server';
 import { runQuery, getQuery } from '../../lib/db';
-import { encryptPassword, decryptPassword } from '../../lib/encryption';
+import { encrypt, decrypt } from '../../lib/encryption';
 
 export default async function handler(req, res) {
   const token = req.headers.authorization?.split(' ')[1];
@@ -24,17 +24,20 @@ export default async function handler(req, res) {
         if (!description || !password) {
           return res.status(400).json({ message: 'Description and password are required' });
         }
-        const encryptedPassword = encryptPassword(password);
-        const id = await addPassword(userId, description, encryptedPassword);
+        const encryptedDesc = encrypt(description);
+        const encryptedPass = encrypt(password);
+        const id = await addPassword(userId, encryptedDesc, encryptedPass);
         res.status(201).json({ id, description });
         break;
 
       case 'PUT':
-        const { id: updateId, description: updateDesc, encrypted_password } = req.body;
-        if (!updateId || !updateDesc || !encrypted_password) {
-          return res.status(400).json({ message: 'ID, description, and encrypted password are required' });
+        const { id: updateId, description: updateDesc, password: updatePass } = req.body;
+        if (!updateId || !updateDesc || !updatePass) {
+          return res.status(400).json({ message: 'ID, description, and password are required' });
         }
-        await updatePassword(updateId, userId, updateDesc, encrypted_password);
+        const encryptedUpdateDesc = encrypt(updateDesc);
+        const encryptedUpdatePass = encrypt(updatePass);
+        await updatePassword(updateId, userId, encryptedUpdateDesc, encryptedUpdatePass);
         res.status(200).json({ message: 'Password updated successfully' });
         break;
 
@@ -58,19 +61,51 @@ export default async function handler(req, res) {
 }
 
 async function getPasswords(userId) {
-  const sql = 'SELECT id, description, encrypted_password FROM passwords WHERE user_id = ?';
-  return await getQuery(sql, [userId]);
+  const sql = 'SELECT id, encrypted_description, description_iv, description_auth_tag, encrypted_password_data, password_iv, password_auth_tag FROM passwords WHERE user_id = ?';
+  const passwords = await getQuery(sql, [userId]);
+  return passwords.map(pw => ({
+    id: pw.id,
+    description: decrypt({
+      encryptedData: pw.encrypted_description,
+      iv: pw.description_iv,
+      authTag: pw.description_auth_tag
+    }),
+    password: decrypt({
+      encryptedData: pw.encrypted_password_data,
+      iv: pw.password_iv,
+      authTag: pw.password_auth_tag
+    })
+  }));
 }
 
-async function addPassword(userId, description, encryptedPassword) {
-  const sql = 'INSERT INTO passwords (user_id, description, encrypted_password) VALUES (?, ?, ?)';
-  const result = await runQuery(sql, [userId, description, encryptedPassword]);
+async function addPassword(userId, encryptedDescription, encryptedPassword) {
+  const sql = `
+    INSERT INTO passwords (
+      user_id, 
+      encrypted_description, description_iv, description_auth_tag,
+      encrypted_password_data, password_iv, password_auth_tag
+    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+  const result = await runQuery(sql, [
+    userId,
+    encryptedDescription.encryptedData, encryptedDescription.iv, encryptedDescription.authTag,
+    encryptedPassword.encryptedData, encryptedPassword.iv, encryptedPassword.authTag
+  ]);
   return result.lastID;
 }
 
-async function updatePassword(id, userId, description, encryptedPassword) {
-  const sql = 'UPDATE passwords SET description = ?, encrypted_password = ? WHERE id = ? AND user_id = ?';
-  await runQuery(sql, [description, encryptedPassword, id, userId]);
+async function updatePassword(id, userId, encryptedDescription, encryptedPassword) {
+  const sql = `
+    UPDATE passwords SET 
+      encrypted_description = ?, description_iv = ?, description_auth_tag = ?,
+      encrypted_password_data = ?, password_iv = ?, password_auth_tag = ?
+    WHERE id = ? AND user_id = ?
+  `;
+  await runQuery(sql, [
+    encryptedDescription.encryptedData, encryptedDescription.iv, encryptedDescription.authTag,
+    encryptedPassword.encryptedData, encryptedPassword.iv, encryptedPassword.authTag,
+    id, userId
+  ]);
 }
 
 async function deletePassword(id, userId) {
