@@ -59,8 +59,6 @@ Before running the application, you need to set up your environment variables:
 
 3. Set these values in your `.env.local` file.
 
-Note: If you skip this step when using Docker, the application will use the example environment variables, which is not recommended for production use.
-
 ### Standard Installation (Non-Docker)
 
 1. Clone the repository:
@@ -102,12 +100,17 @@ Note: If you skip this step when using Docker, the application will use the exam
 
 2. Set up the `.env.local` file as described in the Environment Variables section.
 
-3. Build and start the Docker container:
+3. Create a named volume for persistent data storage:
+   ```bash
+   docker volume create vaulty-data
+   ```
+
+4. Build and start the Docker container:
    ```bash
    docker-compose up -d
    ```
 
-4. Open your browser and navigate to `http://localhost:3010`
+5. Open your browser and navigate to `http://localhost:3010`
 
 ### Docker Run Installation
 
@@ -119,21 +122,27 @@ Note: If you skip this step when using Docker, the application will use the exam
 
 2. Create and configure the `.env.local` file as described in the Environment Variables section.
 
-3. Build the Docker image:
+3. Create a named volume for persistent data storage:
+   ```bash
+   docker volume create vaulty-data
+   ```
+
+4. Build the Docker image:
    ```bash
    docker build -t vaulty .
    ```
 
-4. Run the Docker container:
+5. Run the Docker container:
    ```bash
    docker run -d -p 3010:3010 \
      --env-file .env.local \
-     -v $(pwd)/secure_clipboard.sqlite:/app/secure_clipboard.sqlite \
+     -v vaulty-data:/app/data \
+     -v $(pwd)/.env.local:/app/.env.local:ro \
      --name vaulty \
      vaulty
    ```
 
-5. Open your browser and navigate to `http://localhos1:3010`
+6. Open your browser and navigate to `http://localhost:3010`
 
 ## 💻 Usage
 
@@ -175,6 +184,43 @@ npm run dev
 
 This will start the development server with hot-reloading enabled.
 
+## 📦 Data Persistence
+
+The application uses a Docker named volume `vaulty-data` to store the SQLite database. This ensures that your data persists even if the Docker container is stopped or removed.
+
+To backup the database:
+
+1. Stop the running container:
+   ```
+   docker-compose down
+   ```
+
+2. Create a backup of the volume:
+   ```
+   docker run --rm -v vaulty-data:/dbdata -v $(pwd):/backup alpine tar cvf /backup/vaulty-backup.tar /dbdata
+   ```
+
+   This will create a backup file named `vaulty-backup.tar` in your current directory.
+
+To restore from a backup:
+
+1. Ensure the container is not running:
+   ```
+   docker-compose down
+   ```
+
+2. Restore the backup:
+   ```
+   docker run --rm -v vaulty-data:/dbdata -v $(pwd):/backup alpine sh -c "rm -rf /dbdata/* /dbdata/..?* /dbdata/.[!.]* ; tar xvf /backup/vaulty-backup.tar"
+   ```
+
+3. Start the container:
+   ```
+   docker-compose up -d
+   ```
+
+Always ensure you have recent backups of your data, especially before performing updates or maintenance on the application.
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for more details.
@@ -186,7 +232,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-made with ❤️ by shooter
+Made with ❤️ by shooter
 
 [GitHub](https://github.com/shooter-git)
 </div>
