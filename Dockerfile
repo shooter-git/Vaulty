@@ -13,18 +13,18 @@ RUN npm ci --only=production && npm cache clean --force
 # Copy the rest of the application code
 COPY . .
 
+# Copy the start script to the /app directory
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
 # Create data directory
 RUN mkdir -p /app/data
 
 # Build the Next.js app
 RUN npm run build
 
-# Expose the new port the app runs on
+# Expose the port the app runs on
 EXPOSE 3010
 
-# Create a startup script
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
 # Define the command to run the app
-CMD ["/start.sh"]
+CMD ["sh", "/app/start.sh"]
