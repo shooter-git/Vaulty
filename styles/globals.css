@@ -26,6 +26,7 @@
 }
 
 html, body, #__next {
+  @apply bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -34,12 +35,17 @@ html, body, #__next {
 body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  @apply bg-kali-primary dark:bg-synthwave-primary text-kali-text dark:text-synthwave-text;
+  min-height: 100vh;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
 }
 
 #__next {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
 }
 
 /* Landscape mode adjustments */
@@ -133,4 +139,27 @@ body {
   border-width: 0;
   user-select: text;
   -webkit-user-select: text;
+}
+
+/* Safe area insets for mobile devices */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Ensure full height on iOS devices */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* New full-height utility class */
+.full-height {
+  min-height: 100vh;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
 }

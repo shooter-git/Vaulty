@@ -1,35 +1,37 @@
 {
-    "name": "Secure Clipboard PWA",
-    "short_name": "SecureClip",
-    "description": "A secure password manager Progressive Web App",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#4a90e2",
-    "icons": [
-      {
-        "src": "/icons/icon-192x192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "/icons/icon-512x512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-      },
-      {
-        "src": "/icons/maskable_icon.png",
-        "sizes": "192x192",
-        "type": "image/png",
-        "purpose": "maskable"
-      }
-    ],
-    "orientation": "portrait",
-    "categories": ["productivity", "security"],
-    "lang": "en-US",
-    "dir": "ltr",
-    "prefer_related_applications": false,
-    "related_applications": [],
-    "scope": "/",
-    "iarc_rating_id": ""
-  }
+  "name": "Secure Clipboard PWA",
+  "short_name": "SecureClip",
+  "description": "A secure password manager Progressive Web App",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4a90e2",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/maskable_icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "orientation": "portrait",
+  "categories": ["productivity", "security"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "scope": "/",
+  "iarc_rating_id": "",
+  "apple-mobile-web-app-capable": "yes",
+  "apple-mobile-web-app-status-bar-style": "black-translucent"
+}
