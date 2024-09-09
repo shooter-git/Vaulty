@@ -46,5 +46,4 @@ yarn-error.log*
 *.sqlite
 *.sqlite3
 
-package-lock.json
 .vscode/settings.json
