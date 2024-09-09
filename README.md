@@ -12,7 +12,7 @@
 
 A secure, lightweight Progressive Web App for managing passwords and sensitive information with ease!
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Security](#-security) • [Contributing](#-contributing)
+[Features](#-features) • [Installation](#-installation-and-setup) • [Usage](#-usage) • [Security](#-security) • [Contributing](#-contributing)
 
 </div>
 
@@ -29,7 +29,7 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
 - 🌓 **Theme Toggle**: Switch between Kali and Synthwave themes
 - 🐳 **Docker Support**: Easy deployment with Docker
 
-## 🚀 Installation
+## 🚀 Installation and Setup
 
 ### Prerequisites
 
@@ -37,16 +37,20 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
 - npm (v6 or later)
 - Docker (optional, for containerized deployment)
 
-### Environment Variables
+### Environment Setup
 
-Before running the application, you need to set up your environment variables:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/shooter-git/vaulty.git
+   cd vaulty
+   ```
 
-1. Copy the `.env.example` file to `.env.local`:
+2. Copy the `.env.example` file to `.env.local`:
    ```bash
    cp .env.example .env.local
    ```
 
-2. Open `.env.local` in a text editor and update the values:
+3. Open `.env.local` in a text editor and update the values:
 
    - Generate a secure `ENCRYPTION_KEY` (64-character hex string):
      ```bash
@@ -56,83 +60,55 @@ Before running the application, you need to set up your environment variables:
      ```bash
      node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"
      ```
-
-3. Set these values in your `.env.local` file.
+   - Set these values in your `.env.local` file, along with any other required environment variables.
 
 ### Standard Installation (Non-Docker)
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/shooter-git/vaulty.git
-   cd vaulty
-   ```
-
-2. Install dependencies:
+1. Install dependencies:
    ```bash
    npm install
    ```
 
-3. Initialize and update the database:
+2. Initialize and update the database:
    ```bash
    npm run db:init
    npm run db:update
    ```
 
-4. Build the application:
+3. Build the application:
    ```bash
    npm run build
    ```
 
-5. Start the server:
+4. Start the server:
    ```bash
    npm run start:with-db
    ```
 
-6. Open your browser and navigate to `http://localhost:3010`
+5. Open your browser and navigate to `http://localhost:3010`
 
 ### Docker Compose Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/shooter-git/vaulty.git
-   cd vaulty
-   ```
-
-2. Set up the `.env.local` file as described in the Environment Variables section.
-
-3. Create a named volume for persistent data storage:
+1. Create a named volume for persistent data storage:
    ```bash
    docker volume create vaulty-data
    ```
 
-4. Build and start the Docker container:
+2. Build and start the Docker container:
    ```bash
    docker-compose up -d
    ```
 
-5. Open your browser and navigate to `http://localhost:3010`
+3. Open your browser and navigate to `http://localhost:3010`
 
 ### Docker Run Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/shooter-git/vaulty.git
-   cd vaulty
-   ```
-
-2. Create and configure the `.env.local` file as described in the Environment Variables section.
-
-3. Create a named volume for persistent data storage:
-   ```bash
-   docker volume create vaulty-data
-   ```
-
-4. Build the Docker image:
+1. Build the Docker image:
    ```bash
    docker build -t vaulty .
    ```
 
-5. Run the Docker container:
+2. Run the Docker container:
    ```bash
    docker run -d -p 3010:3010 \
      --env-file .env.local \
@@ -142,25 +118,19 @@ Before running the application, you need to set up your environment variables:
      vaulty
    ```
 
-6. Open your browser and navigate to `http://localhost:3010`
+3. Open your browser and navigate to `http://localhost:3010`
 
 ## 💻 Usage
 
 1. **Sign Up/Login**: Create a new account or log in to an existing one.
-
 2. **Add New Entry**: Click the "Add Entry" button to add a new password or any sensitive information.
-
 3. **Generate a Password**: Use the built-in generator for strong, unique passwords when needed.
-
 4. **Copy Information**: Click on an entry to securely copy the stored information to your clipboard.
-
 5. **Edit/Delete Entries**: Manage your stored information with easy edit and delete functions.
-
 6. **Use as Secure Clipboard**: 
    - For temporary storage: Add sensitive information as a new entry.
    - To retrieve: Copy the information to your clipboard and use it where needed.
    - For security: The clipboard is automatically cleared after 10 seconds.
-
 7. **Theme Toggle**: Switch between Kali and Synthwave themes using the toggle in the navbar.
 
 ## 🔒 Security
