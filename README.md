@@ -74,9 +74,10 @@ Note: If you skip this step when using Docker, the application will use the exam
    npm install
    ```
 
-3. Initialize the database:
+3. Initialize and update the database:
    ```bash
    npm run db:init
+   npm run db:update
    ```
 
 4. Build the application:
@@ -86,7 +87,7 @@ Note: If you skip this step when using Docker, the application will use the exam
 
 5. Start the server:
    ```bash
-   npm start
+   npm run start:with-db
    ```
 
 6. Open your browser and navigate to `http://localhost:3010`

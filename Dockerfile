@@ -8,11 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install app dependencies
-# Use npm install instead of npm ci to avoid deprecation warnings
-RUN npm install --production
+RUN npm ci --only=production && npm cache clean --force
 
 # Copy the rest of the application code
 COPY . .
+
+# Create data directory
+RUN mkdir -p /app/data
 
 # Build the Next.js app
 RUN npm run build

@@ -6,9 +6,15 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3010
+      - DB_DATA_DIR=/app/data
     env_file:
       - .env.local
     volumes:
-      - ./secure_clipboard.sqlite:/app/secure_clipboard.sqlite
-      - ./.env.local:/app/.env.local
+      - vaulty-data:/app/data
+      - ./.env.local:/app/.env.local:ro
     restart: unless-stopped
+
+volumes:
+  vaulty-data:
+    name: vaulty-data
+    external: true

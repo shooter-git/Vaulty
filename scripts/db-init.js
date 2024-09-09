@@ -4,8 +4,9 @@ const path = require('path');
 
 async function initDb() {
   try {
+    const dataDir = process.env.DB_DATA_DIR || path.join(__dirname, '..', 'data');
     const db = await open({
-      filename: path.join(__dirname, '..', 'secure_clipboard.sqlite'),
+      filename: path.join(dataDir, 'secure_clipboard.sqlite'),
       driver: sqlite3.Database
     });
 
@@ -22,12 +23,9 @@ async function initDb() {
       )
     `);
 
-    // Drop existing passwords table if it exists
-    await db.run(`DROP TABLE IF EXISTS passwords`);
-
-    // Create passwords table with correct structure
+    // Create passwords table
     await db.run(`
-      CREATE TABLE passwords (
+      CREATE TABLE IF NOT EXISTS passwords (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         encrypted_description TEXT NOT NULL,

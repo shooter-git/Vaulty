@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { generatePassword } from '../lib/passwordGenerator'
 
 export default function PasswordEntry({ password, onEdit, onDelete }) {
@@ -8,16 +8,21 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
   const [editedDescription, setEditedDescription] = useState(password.description)
   const [editedPassword, setEditedPassword] = useState(password.password)
   const [error, setError] = useState(null)
+  const passwordRef = useRef(null)
 
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(password.password)
-      setIsCopied(true)
-      setTimeout(() => setIsCopied(false), 2000)
-      setTimeout(() => navigator.clipboard.writeText(''), 10000)
-    } catch (err) {
-      console.error('Failed to copy password:', err)
-      setError('Failed to copy password. Please try again.')
+  const copyToClipboard = () => {
+    if (passwordRef.current) {
+      passwordRef.current.select()
+      passwordRef.current.setSelectionRange(0, 99999) // For mobile devices
+
+      try {
+        document.execCommand('copy')
+        setIsCopied(true)
+        setTimeout(() => setIsCopied(false), 2000)
+      } catch (err) {
+        console.error('Failed to copy password:', err)
+        setError('Failed to copy password. Please try again.')
+      }
     }
   }
 
@@ -82,7 +87,6 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
         <div className="flex space-x-1 flex-shrink-0">
           <button
             onClick={handleCopyClick}
-            onTouchStart={handleCopyClick}
             className={primaryButtonClass}
           >
             {isCopied ? 'Copied' : 'Copy'}
@@ -161,6 +165,13 @@ export default function PasswordEntry({ password, onEdit, onDelete }) {
           )}
         </div>
       )}
+      <textarea
+        ref={passwordRef}
+        value={password.password}
+        readOnly
+        className="sr-only"
+        aria-hidden="true"
+      />
     </div>
   )
 }
