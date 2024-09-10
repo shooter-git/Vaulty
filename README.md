@@ -79,7 +79,7 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
 
 3. Build and start the Docker container:
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 4. The application will be available at `http://localhost:3010`
@@ -177,7 +177,7 @@ To backup the database:
 
 1. Stop the running container:
    ```
-   docker-compose down
+   docker compose down
    ```
 
 2. Create a backup of the volume:
@@ -191,7 +191,7 @@ To restore from a backup:
 
 1. Ensure the container is not running:
    ```
-   docker-compose down
+   docker compose down
    ```
 
 2. Restore the backup:
@@ -201,7 +201,7 @@ To restore from a backup:
 
 3. Start the container:
    ```
-   docker-compose up -d
+   docker compose up -d
    ```
 
 Always ensure you have recent backups of your data, especially before performing updates or maintenance on the application.
