@@ -15,7 +15,7 @@
 
 A secure, lightweight Progressive Web App for managing passwords and sensitive information with ease!
 
-[Features](#-features) • [Screenshots](#-screenshots) • [Installation](#-installation-and-setup) • [Usage](#-usage) • [Security](#-security) • [Contributing](#-contributing)
+[Features](#-features) • [Screenshots](#-screenshots) • [Installation](#-installation-and-setup) • [Usage](#-usage) • [Security](#-security) • [Development](#️-development) • [Data Persistence](#-data-persistence) • [Roadmap](#️-roadmap) • [Contributing](#-contributing) • [License](#-license)
 
 </div>
 
@@ -220,6 +220,26 @@ To restore from a backup:
    ```
 
 Always ensure you have recent backups of your data, especially before performing updates or maintenance on the application.
+
+## 🗺️ Roadmap
+
+We're constantly working to improve Vaulty and expand its capabilities. Here are some features and improvements we're planning for future releases:
+
+1. **App and Webpage Integration**: 
+   - Develop browser extensions for seamless integration with web applications.
+
+2. **User Account Management**:
+   - Implement a secure password reset functionality.
+   - Add the ability for users to update their account information.
+
+3. **Advanced Security Features**:
+   - Add support for two-factor authentication (2FA).
+   - Implement a secure password sharing feature.
+
+4. **Authentication Upgrade**:
+   - Integrate Clerk for robust authentication and account creation functionality.
+
+We're excited about these upcoming features and improvements. Stay tuned for updates, and feel free to contribute ideas or code to help make Vaulty even better!
 
 ## 🤝 Contributing
 
