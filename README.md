@@ -15,7 +15,7 @@
 
 A secure, lightweight Progressive Web App for managing passwords and sensitive information with ease!
 
-[Features](#-features) • [Installation](#-installation-and-setup) • [Usage](#-usage) • [Security](#-security) • [Contributing](#-contributing)
+[Features](#-features) • [Screenshots](#-screenshots) • [Installation](#-installation-and-setup) • [Usage](#-usage) • [Security](#-security) • [Contributing](#-contributing)
 
 </div>
 
@@ -34,8 +34,9 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
 
 ## 📸 Screenshots
 
+![Vaulty Banner](/public/kali_login.png)
 <div align="center">
-  <img src="assets/password-list-kali.png" alt="Password list in Kali theme" width="45%">
+  <img src="/public/kali_login.png" alt="Kali login screen" width="45%">
   <img src="assets/password-list-synthwave.png" alt="Password list in Synthwave theme" width="45%">
 </div>
 
