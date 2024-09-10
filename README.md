@@ -1,4 +1,4 @@
-# 🔐 Vaulty - Secure Password Manager & Clipboard PWA
+# 🔐 Vaulty - Secure Clipboard PWA
 
 <div align="center">
 
