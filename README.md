@@ -153,7 +153,7 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
 ## 💻 Usage
 
 1. **Sign Up/Login**: Create a new account or log in to an existing one.
-2. **Add New Entry**: Click the "Add Entry" button to add a new password or any sensitive information.
+2. **Add New Entry**: Click the "Add Password" button to add a new password or any sensitive information.
 3. **Generate a Password**: Use the built-in generator for strong, unique passwords when needed.
 4. **Copy Information**: Click on an entry to securely copy the stored information to your clipboard.
 5. **Edit/Delete Entries**: Manage your stored information with easy edit and delete functions.
