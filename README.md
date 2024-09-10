@@ -32,6 +32,18 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
 - 🌓 **Theme Toggle**: Switch between Kali and Synthwave themes
 - 🐳 **Docker Support**: Easy deployment with Docker
 
+## 📸 Screenshots
+
+<div align="center">
+  <img src="assets/password-list-kali.png" alt="Password list in Kali theme" width="45%">
+  <img src="assets/password-list-synthwave.png" alt="Password list in Synthwave theme" width="45%">
+</div>
+
+<div align="center">
+  <img src="assets/add-password.png" alt="Add new password form" width="45%">
+  <img src="assets/mobile-view.png" alt="Mobile view of the app" width="25%">
+</div>
+
 ## 🚀 Installation and Setup
 
 ### Prerequisites
