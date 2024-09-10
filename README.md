@@ -34,15 +34,14 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
 
 ## 📸 Screenshots
 
-![Vaulty Banner](/public/kali_login.png)
 <div align="center">
-  <img src="/public/kali_login.png" alt="Kali login screen" width="45%">
-  <img src="assets/password-list-synthwave.png" alt="Password list in Synthwave theme" width="45%">
+  <img src="public/kali_login.png" alt="Login screen in Kali theme" width="45%">
+  <img src="public/password_list_kali.png" alt="Password list in Kali theme" width="45%">
 </div>
 
 <div align="center">
-  <img src="assets/add-password.png" alt="Add new password form" width="45%">
-  <img src="assets/mobile-view.png" alt="Mobile view of the app" width="25%">
+  <img src="public/add_password_synth.png" alt="Add new password form in Synthwave theme" width="45%">
+  <img src="public/mobile_view_synth.png" alt="Mobile view of the app in Synthwave theme" width="25%">
 </div>
 
 ## 🚀 Installation and Setup
