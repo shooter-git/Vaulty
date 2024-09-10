@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    container_name: vaulty
     ports:
       - "3010:3010"
     environment:
@@ -12,7 +13,7 @@ services:
     volumes:
       - vaulty-data:/app/data
       - ./.env.local:/app/.env.local:ro
-    restart: unless-stopped
+    restart: always
 
 volumes:
   vaulty-data:
