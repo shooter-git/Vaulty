@@ -7,7 +7,6 @@ export default function Layout({ children }) {
   const { themeName } = useTheme()
 
   useEffect(() => {
-    // Apply the theme class to the root element
     document.documentElement.className = themeName === 'synthwave' ? 'dark' : '';
   }, [themeName]);
 
@@ -28,7 +27,7 @@ export default function Layout({ children }) {
       </div>
 
       <main className="flex-grow w-full overflow-auto pt-safe">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 h-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 h-full">
           {children}
         </div>
       </main>

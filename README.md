@@ -60,7 +60,55 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
      ```bash
      node -e "console.log(require('crypto').randomBytes(64).toString('base64'))"
      ```
+   - Generate a `NEXT_PUBLIC_ENCRYPTION_KEY` (32-byte encryption key):
+     ```bash
+     node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+     ```
    - Set these values in your `.env.local` file, along with any other required environment variables.
+
+### Docker Installation (Recommended)
+
+#### Option 1: Using Docker Compose
+
+1. Ensure Docker and Docker Compose are installed on your system.
+
+2. Create a named volume for persistent data storage:
+   ```bash
+   docker volume create vaulty-data
+   ```
+
+3. Build and start the Docker container:
+   ```bash
+   docker-compose up -d
+   ```
+
+4. The application will be available at `http://localhost:3010`
+
+#### Option 2: Using Docker Run
+
+1. Ensure Docker is installed on your system.
+
+2. Create a named volume for persistent data storage:
+   ```bash
+   docker volume create vaulty-data
+   ```
+
+3. Build the Docker image:
+   ```bash
+   docker build -t vaulty .
+   ```
+
+4. Run the Docker container:
+   ```bash
+   docker run -d -p 3010:3010 \
+     --env-file .env.local \
+     -v vaulty-data:/app/data \
+     -v $(pwd)/.env.local:/app/.env.local:ro \
+     --name vaulty \
+     vaulty
+   ```
+
+5. The application will be available at `http://localhost:3010`
 
 ### Standard Installation (Non-Docker)
 
@@ -86,39 +134,6 @@ A secure, lightweight Progressive Web App for managing passwords and sensitive i
    ```
 
 5. Open your browser and navigate to `http://localhost:3010`
-
-### Docker Compose Installation
-
-1. Create a named volume for persistent data storage:
-   ```bash
-   docker volume create vaulty-data
-   ```
-
-2. Build and start the Docker container:
-   ```bash
-   docker-compose up -d
-   ```
-
-3. Open your browser and navigate to `http://localhost:3010`
-
-### Docker Run Installation
-
-1. Build the Docker image:
-   ```bash
-   docker build -t vaulty .
-   ```
-
-2. Run the Docker container:
-   ```bash
-   docker run -d -p 3010:3010 \
-     --env-file .env.local \
-     -v vaulty-data:/app/data \
-     -v $(pwd)/.env.local:/app/.env.local:ro \
-     --name vaulty \
-     vaulty
-   ```
-
-3. Open your browser and navigate to `http://localhost:3010`
 
 ## 💻 Usage
 
