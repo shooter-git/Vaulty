@@ -12,7 +12,7 @@ export default function Layout({ children }) {
   }, [themeName]);
 
   return (
-    <div className="full-height flex flex-col bg-kali-primary dark:bg-synthwave-primary">
+    <div className="min-h-screen flex flex-col bg-kali-primary dark:bg-synthwave-primary">
       <Head>
         <title>Vaulty</title>
         <meta name="description" content="A secure password manager PWA" />
@@ -20,11 +20,14 @@ export default function Layout({ children }) {
         <meta name="theme-color" content={themeName === 'synthwave' ? '#1f1b24' : '#0c0c0c'} />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </Head>
 
-      <Navbar />
+      <div className="safe-top">
+        <Navbar />
+      </div>
 
-      <main className="flex-grow w-full overflow-auto">
+      <main className="flex-grow w-full overflow-auto pt-safe">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6 h-full">
           {children}
         </div>

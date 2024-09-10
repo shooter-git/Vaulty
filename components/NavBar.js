@@ -14,7 +14,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text p-4">
+    <header className="bg-kali-secondary dark:bg-synthwave-secondary text-kali-text dark:text-synthwave-text p-4 pt-safe">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-2xl font-bold">Vaulty</h1>
         <div className="flex items-center space-x-4">
